@@ -93,10 +93,16 @@ export const ROOM = {
   wallThickness: 0.2,
 } as const
 
+/** Estensione del pavimento sotto i muri per evitare stacchi visivi. */
+export const FLOOR_EDGE_BLEED = ROOM.wallThickness + 0.12
+
 export const DESK = { width: 1.6, depth: 0.8, height: 0.75 } as const
 export const RACK = { width: 0.6, height: 2.0, depth: 1.0 } as const
 
 export const RACK_FRONT_Z = (rackZ: number) => rackZ + RACK.depth / 2 + 0.01
+
+/** Spostamento visivo lungo z rispetto alla `position` del layout (negativo = verso il muro nord). */
+export const RACK_VISUAL_Z_OFFSET = -0.15
 
 /**
  * Stanza del red team: staccata dall'ufficio (a ovest), quattro muri pieni e nessuna porta.
@@ -353,20 +359,7 @@ const serverRoom: LayoutItem[] = [
   // Due rack 42U in fila, armadio di rete con router
   { type: 'rack', id: 'rack-1', position: [3.0, -4.3], host: 'srv-01' },
   { type: 'rack', id: 'rack-2', position: [3.62, -4.3], host: 'srv-02' },
-  {
-    type: 'box',
-    id: 'network-cabinet',
-    kind: 'static',
-    position: [5.2, 1.0, -4.4],
-    size: [0.8, 2.0, 0.8],
-  },
-  {
-    type: 'box',
-    id: 'router',
-    kind: 'interactive',
-    position: [5.2, 1.1, -3.99],
-    size: [0.6, 0.12, 0.02],
-  },
+  { type: 'rack', id: 'network-cabinet', position: [5.2, -4.4], host: 'network' },
 ]
 
 const wingW = WING.maxX - WING.minX

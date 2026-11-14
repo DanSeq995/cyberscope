@@ -10,6 +10,7 @@ import {
   ITEM_LABELS,
   LAYOUT,
   RACK,
+  RACK_VISUAL_Z_OFFSET,
   RED_ROOM,
   ROOM,
   ZONES,
@@ -70,7 +71,7 @@ function DeskCollider({ position: [x, z], facing }: Pick<DeskItem, 'position' | 
 
 function RackCollider({ position: [x, z] }: Pick<RackItem, 'position'>) {
   return (
-    <RigidBody type="fixed" colliders={false} position={[x, RACK.height / 2, z]}>
+    <RigidBody type="fixed" colliders={false} position={[x, RACK.height / 2, z + RACK_VISUAL_Z_OFFSET]}>
       <CuboidCollider args={[RACK.width / 2, RACK.height / 2, RACK.depth / 2]} />
     </RigidBody>
   )
