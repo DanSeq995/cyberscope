@@ -7,7 +7,7 @@ export const DESK_CHAIR_GLB = '/models/desk-chair.glb'
 /** Sollevamento postazione rispetto al pavimento (m). */
 export const DESK_FLOOR_LIFT = 0.2
 /** Avvicinamento PC al monitor (m), lato opposto alla sedia. */
-export const DESK_PC_TOWARD_MONITOR = 0.07
+export const DESK_PC_TOWARD_MONITOR = 0.1
 
 /** Spessore massimo (m) di un tampo sottilissimo nel GLB sorgente. */
 const DESK_TOP_MAX_THICKNESS = 0.003
