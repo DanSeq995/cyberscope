@@ -3,7 +3,7 @@ import { MeshStandardMaterial } from 'three'
 import { useWorkStore } from '@/state/work'
 
 import { GreyBox } from '../office/GreyBox'
-import { RACK, STATIONS, TEAM_RACK } from '../office/layout'
+import { RACK_FRONT_Z, STATIONS, TEAM_RACK } from '../office/layout'
 import { GuideRing } from '../soc/GuideRing'
 
 /** Frontali degli apparati installati (blu) e cavi di collegamento (gialli). */
@@ -11,7 +11,7 @@ const DEVICE_MATERIAL = new MeshStandardMaterial({ color: '#1d4ed8', roughness: 
 const CABLE_MATERIAL = new MeshStandardMaterial({ color: '#eab308', roughness: 0.7 })
 
 const [X, Z] = TEAM_RACK.position
-const FRONT = Z + RACK.depth / 2 + 0.01
+const FRONT = RACK_FRONT_Z(Z)
 
 /** Dall'alto: firewall (1U), router (1U), server (2U) — lo stesso ordine del percorso sw-core → fw → rt → srv. */
 const UNITS = [
@@ -32,10 +32,10 @@ export function TeamRack() {
 
   return (
     <group>
-      {UNITS.map(({ id, y, height }) => (
-        <group key={id}>
-          <GreyBox material={DEVICE_MATERIAL} position={[X, y, FRONT]} size={[0.48, height, 0.02]} />
-          <mesh position={[X - 0.2, y, FRONT + 0.012]}>
+      {UNITS.map((unit) => (
+        <group key={unit.id}>
+          <GreyBox material={DEVICE_MATERIAL} position={[X, unit.y, FRONT]} size={[0.48, unit.height, 0.02]} />
+          <mesh position={[X - 0.2, unit.y, FRONT + 0.012]}>
             <boxGeometry args={[0.02, 0.02, 0.004]} />
             <meshBasicMaterial color="#4ade80" />
           </mesh>

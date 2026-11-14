@@ -1,3 +1,6 @@
+import { DESK_PC_TOWARD_MONITOR, deskSurfaceWorldY } from './deskChairFit'
+import { DESK_COMPUTER_LAYOUT, deskScreenWorldCenter } from './deskComputerFit'
+
 /**
  * Layout greybox dell'ufficio del blue team.
  * Unità: 1 = 1 metro. Origine al centro del pavimento.
@@ -93,6 +96,8 @@ export const ROOM = {
 export const DESK = { width: 1.6, depth: 0.8, height: 0.75 } as const
 export const RACK = { width: 0.6, height: 2.0, depth: 1.0 } as const
 
+export const RACK_FRONT_Z = (rackZ: number) => rackZ + RACK.depth / 2 + 0.01
+
 /**
  * Stanza del red team: staccata dall'ufficio (a ovest), quattro muri pieni e nessuna porta.
  * Chi sceglie il red team nasce e resta qui.
@@ -157,8 +162,8 @@ export const VIDEO_WALL: { position: Vec3; size: Vec3 } = {
  */
 const SOC_DESK_Z = -1.9
 
-/** Monitor delle postazioni: dimensioni, altezza sopra il piano e distanza dal centro verso il bordo lontano. */
-export const MONITOR = { size: [0.6, 0.38, 0.04] as Vec3, aboveDesk: 0.3, offset: 0.2 } as const
+/** Distanza dal centro scrivania del modello monitor verso il bordo lontano. */
+export const MONITOR = { offset: 0.2 } as const
 
 interface PcPlace {
   position: Vec2
@@ -166,9 +171,9 @@ interface PcPlace {
 }
 
 /** PC di studio della teoria: la prima postazione del bancone SOC (la più vicina all'ingresso). */
-const STUDY_PC: PcPlace = { position: [-3.9, SOC_DESK_Z], facing: -1 }
+const STUDY_PC: PcPlace = { position: [-4.05, SOC_DESK_Z], facing: -1 }
 /** PC di lavoro del sistemista: la postazione accanto (posta e simulatore di rete). */
-const WORK_PC: PcPlace = { position: [-2.5, SOC_DESK_Z], facing: -1 }
+const WORK_PC: PcPlace = { position: [-2.3, SOC_DESK_Z], facing: -1 }
 
 /** PC del red team: scrivania contro il muro nord della sua stanza. */
 const RED_PC: PcPlace = { position: [(RED_ROOM.minX + RED_ROOM.maxX) / 2, RED_ROOM.minZ + DESK.depth / 2 + 0.1], facing: -1 }
@@ -176,13 +181,16 @@ const RED_PC: PcPlace = { position: [(RED_ROOM.minX + RED_ROOM.maxX) / 2, RED_RO
 /** Centro della faccia frontale del monitor e misure dello schermo (m), per lo zoom della camera. */
 function deskMonitor(pc: PcPlace, screenColor: string) {
   return {
-    center: [
+    center: deskScreenWorldCenter(
       pc.position[0],
-      DESK.height + MONITOR.aboveDesk,
-      pc.position[1] + pc.facing * (MONITOR.offset - MONITOR.size[2] / 2),
-    ] as Vec3,
+      pc.position[1],
+      pc.facing,
+      deskSurfaceWorldY(),
+      MONITOR.offset + DESK_PC_TOWARD_MONITOR,
+      DESK_COMPUTER_LAYOUT.screenLocal,
+    ),
     facing: pc.facing,
-    screen: [0.54, 0.32] as Vec2,
+    screen: DESK_COMPUTER_LAYOUT.screen,
     /** Frazione dell'altezza della vista coperta dallo schermo a fine zoom (uguale all'overlay HTML). */
     fill: 0.95,
     /** Colore dello schermo acceso = sfondo della pagina HTML (il passaggio 3D → HTML non si nota). */
@@ -398,24 +406,17 @@ const redRoom: LayoutItem[] = [
 
 const soc: LayoutItem[] = [
   { type: 'box', id: 'video-wall', kind: 'interactive', ...VIDEO_WALL },
-  {
-    type: 'box',
-    id: 'soc-desk',
-    kind: 'static',
-    position: [-2.5, DESK.height / 2, SOC_DESK_Z],
-    size: [4.2, DESK.height, DESK.depth],
-  },
   { type: 'workstation', id: 'soc-1', ...STUDY_PC, pc: 'study' },
   { type: 'workstation', id: 'soc-2', ...WORK_PC, pc: 'work' },
-  { type: 'workstation', id: 'soc-3', position: [-1.1, SOC_DESK_Z], facing: -1 },
+  { type: 'workstation', id: 'soc-3', position: [-0.75, SOC_DESK_Z], facing: -1 },
 ]
 
 const openSpace: LayoutItem[] = [
   // Isola 2×2: le due file si danno le spalle
-  { type: 'desk', id: 'desk-1', position: [0.2, 2.1], facing: 1 },
-  { type: 'desk', id: 'desk-2', position: [1.8, 2.1], facing: 1 },
-  { type: 'desk', id: 'desk-3', position: [0.2, 2.9], facing: -1 },
-  { type: 'desk', id: 'desk-4', position: [1.8, 2.9], facing: -1 },
+  { type: 'desk', id: 'desk-1', position: [0.15, 2.0], facing: 1 },
+  { type: 'desk', id: 'desk-2', position: [1.85, 2.0], facing: 1 },
+  { type: 'desk', id: 'desk-3', position: [0.15, 3.35], facing: -1 },
+  { type: 'desk', id: 'desk-4', position: [1.85, 3.35], facing: -1 },
 ]
 
 const services: LayoutItem[] = [
