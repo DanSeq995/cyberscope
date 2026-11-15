@@ -1,5 +1,7 @@
 import { Box3, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, RepeatWrapping, Vector3 } from 'three'
 
+import { toOpaqueStandard } from './gltfOptimize'
+
 export const FLOOR_TILE_GLB = '/models/floor-tile.glb'
 
 /** Lato logico di una ripetizione texture (m). */
@@ -41,13 +43,8 @@ export function createTiledFloorMaterial(
     return new MeshStandardMaterial({ color: '#b4b8bf', roughness: 1 })
   }
 
-  const mat = src.clone()
-  mat.transparent = false
-  mat.opacity = 1
-  mat.depthWrite = true
-  if (mat instanceof MeshPhysicalMaterial) {
-    mat.transmission = 0
-  }
+  // Copia propria (non dalla cache condivisa): la ripetizione della texture dipende dal piano.
+  const mat = toOpaqueStandard(src).clone()
 
   if (mat.map) {
     mat.map = mat.map.clone()

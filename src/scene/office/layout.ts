@@ -136,7 +136,7 @@ const DOOR = { width: 1, height: 2.1 }
 const ENTRANCE_X = -4.5
 const SERVER_DOOR_X = 4
 /** Sala server: angolo NE, da x = 2 a 6 e da z = -5 a -1. */
-const SERVER = { minX: 2, maxZ: -1 }
+export const SERVER = { minX: 2, maxZ: -1 }
 
 const halfW = ROOM.width / 2
 const halfD = ROOM.depth / 2
@@ -154,6 +154,18 @@ export const WING = { minX: halfW + t, maxX: halfW + t + 4, minZ: -1.5, maxZ: 3.
 export const TEAM_RACK: { position: Vec2; host: string } = {
   position: [9.4, WING.minZ + RACK.depth / 2 + 0.05],
   host: 'srv-03',
+}
+
+/**
+ * Finestra (GLB `finestre.glb`: quattro ante con foto di skyline dietro) appoggiata sul muro sud
+ * dell'open space, tra l'ingresso e la stampante. Solo grafica: il muro resta pieno e fa da collider.
+ * `position` = centro della finestra, z sulla faccia interna del muro; `width` = larghezza in metri
+ * (l'altezza segue le proporzioni del modello); `yaw` = rotazione perché guardi dentro la stanza.
+ */
+export const WALL_WINDOW: { position: Vec3; width: number; yaw: number } = {
+  position: [1.5, 1.75, halfD - 0.005],
+  width: 3.2,
+  yaw: Math.PI,
 }
 
 /** Video wall del SOC sul muro nord: qui viene proiettata la dashboard SIEM. */

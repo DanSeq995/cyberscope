@@ -22,7 +22,7 @@ function clock(epochSeconds: number) {
 }
 
 /**
- * Dashboard SIEM del SOC: legge solo lo store (dati arrivati via REST dallo Splunk simulato).
+ * Dashboard SIEM del SOC: legge solo lo store (dati arrivati via REST da Splunk, oggi il mock in memoria).
  * Usata sia sul video wall 3D sia nella vista a tutto schermo.
  */
 export function SocDashboard() {
@@ -45,7 +45,7 @@ export function SocDashboard() {
       {/* Bordo rosso lampeggiante su un livello a parte: il testo resta sempre leggibile */}
       {severe && <div className="absolute inset-0 z-10 animate-pulse border-4 border-red-600" />}
       <header className="flex items-center justify-between bg-slate-900 px-3 py-1.5">
-        <span className="text-sm font-bold tracking-wide text-sky-400">SIEM · Splunk (simulato)</span>
+        <span className="text-sm font-bold tracking-wide text-sky-400">Splunk Enterprise Security · SIEM</span>
         <span className="text-slate-400">index=security · {perMinute} eventi/min</span>
         {phase === 'idle' ? (
           <span className="rounded bg-slate-700 px-2 py-0.5">INATTIVO</span>

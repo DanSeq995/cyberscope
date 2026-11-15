@@ -1,0 +1,945 @@
+{
+  "metadata": {
+    "versione": "1.0",
+    "totale_domini": 5,
+    "quesiti_per_dominio": 20,
+    "scala_difficolta": {
+      "1-5": "Principiante (Istituto Tecnico)",
+      "6-10": "Intermedio (Studente Universitario / Junior)",
+      "11-15": "Avanzato (Security Engineer)",
+      "16-20": "Esperto (Professore Universitario / Ricercatore)"
+    }
+  },
+  "domini": [
+    {
+      "id_dominio": "1.0",
+      "nome_dominio": "General Security Concepts",
+      "quesiti": [
+        {
+          "id": "D1_Q01", "difficolta": 1, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Nella triade CIA (Confidentiality, Integrity, Availability), quale proprietà garantisce che un dato non venga alterato in modo non autorizzato durante il transito o l'archiviazione?",
+          "risposte": [
+            { "id": "A", "testo": "Integrity (Integrità)", "corretta": true, "spiegazione": "Corretta: l'integrità assicura che le informazioni rimangano accurate, complete e non modificate da soggetti o processi non autorizzati, verificabile ad esempio tramite funzioni di hash." },
+            { "id": "B", "testo": "Confidentiality (Riservatezza)", "corretta": false, "spiegazione": "Errata: la riservatezza impedisce la lettura o divulgazione dei dati a soggetti non autorizzati (es. tramite cifratura), ma da sola non rileva se il dato è stato modificato." },
+            { "id": "C", "testo": "Availability (Disponibilità)", "corretta": false, "spiegazione": "Errata: la disponibilità garantisce che sistemi e dati siano accessibili e utilizzabili dagli utenti autorizzati quando richiesto, proteggendo da interruzioni di servizio." }
+          ]
+        },
+        {
+          "id": "D1_Q02", "difficolta": 2, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la differenza fondamentale tra Autenticazione (Authentication) e Autorizzazione (Authorization)?",
+          "risposte": [
+            { "id": "A", "testo": "L'autenticazione verifica l'identità dell'utente; l'autorizzazione stabilisce a quali risorse può accedere", "corretta": true, "spiegazione": "Corretta: l'autenticazione risponde alla domanda 'Chi sei?' (es. verifica credenziali), mentre l'autorizzazione risponde a 'Cosa puoi fare?' applicando i permessi." },
+            { "id": "B", "testo": "L'autenticazione registra le azioni nei file di log; l'autorizzazione cifra la connessione di rete", "corretta": false, "spiegazione": "Errata: la registrazione delle azioni rientra nell'Accounting (o Auditing), mentre la cifratura del canale è una misura di riservatezza, non di autorizzazione." },
+            { "id": "C", "testo": "L'autorizzazione avviene sempre prima dell'autenticazione per determinare quali credenziali richiedere", "corretta": false, "spiegazione": "Errata: nel flusso standard AAA (Authentication, Authorization, Accounting), non è possibile assegnare privilegi a un'entità prima di averne verificato l'identità." }
+          ]
+        },
+        {
+          "id": "D1_Q03", "difficolta": 3, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale delle seguenti combinazioni rappresenta una vera Autenticazione a Più Fattori (MFA)?",
+          "risposte": [
+            { "id": "A", "testo": "Una password complessa seguita da un codice temporaneo generato da un'app sul proprio smartphone", "corretta": true, "spiegazione": "Corretta: combina due categorie distinte di fattori di autenticazione: 'qualcosa che sai' (la password) e 'qualcosa che hai' (il dispositivo che ospita il token TOTP)." },
+            { "id": "B", "testo": "Una password alfanumerica seguita da un PIN numerico a 6 cifre", "corretta": false, "spiegazione": "Errata: sia la password sia il PIN appartengono alla stessa categoria ('qualcosa che sai'), configurando una verifica a due passaggi ma non una vera MFA." },
+            { "id": "C", "testo": "La scansione dell'impronta digitale seguita dal riconoscimento facciale", "corretta": false, "spiegazione": "Errata: entrambi i meccanismi appartengono allo stesso fattore biometrico ('qualcosa che sei'), quindi non soddisfano il requisito di eterogeneità dei fattori." }
+          ]
+        },
+        {
+          "id": "D1_Q04", "difficolta": 4, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale caratteristica distingue una funzione di hash crittografico (come SHA-256) da un algoritmo di cifratura?",
+          "risposte": [
+            { "id": "A", "testo": "È unidirezionale: dal digest prodotto non è possibile risalire matematicamente al messaggio originale", "corretta": true, "spiegazione": "Corretta: una funzione di hash crittografico gode della resistenza alla preimmagine (one-way) e produce un output di lunghezza fissa (256 bit per SHA-256) senza possibilità di decifratura." },
+            { "id": "B", "testo": "Utilizza una chiave segreta condivisa per trasformare il testo in chiaro e poterlo poi ripristinare", "corretta": false, "spiegazione": "Errata: questa è la definizione di cifratura simmetrica (es. AES), che è reversibile possedendo la chiave corretta, a differenza dell'hashing." },
+            { "id": "C", "testo": "Produce un output di dimensione proporzionale alla lunghezza del file di input", "corretta": false, "spiegazione": "Errata: un hash produce sempre un'impronta di lunghezza fissa indipendentemente dal fatto che l'input sia una singola lettera o un'immagine ISO da 4 GB." }
+          ]
+        },
+        {
+          "id": "D1_Q05", "difficolta": 5, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "In base alla classificazione per categoria dei controlli di sicurezza, come viene classificato un tornello con lettore di badge all'ingresso di una sala server?",
+          "risposte": [
+            { "id": "A", "testo": "Controllo fisico (Physical control)", "corretta": true, "spiegazione": "Corretta: i controlli fisici limitano o monitorano l'accesso tangibile agli ambienti e alle infrastrutture (porte blindate, tornelli, telecamere, recinzioni)." },
+            { "id": "B", "testo": "Controllo amministrativo (Managerial/Administrative control)", "corretta": false, "spiegazione": "Errata: i controlli amministrativi riguardano policy aziendali, procedure, formazione del personale e contratti, non barriere meccaniche o elettroniche fisiche." },
+            { "id": "C", "testo": "Controllo compensativo (Compensating control)", "corretta": false, "spiegazione": "Errata: 'compensativo' indica la funzione di sostituire un controllo primario non applicabile, non la categoria strutturale di una barriera fisica d'ingresso." }
+          ]
+        },
+        {
+          "id": "D1_Q06", "difficolta": 6, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è la differenza operativa tra un sistema IDS (Intrusion Detection System) e un sistema IPS (Intrusion Prevention System)?",
+          "risposte": [
+            { "id": "A", "testo": "L'IDS lavora fuori banda e genera alert; l'IPS è posizionato in linea (inline) e può bloccare attivamente il traffico malevolo", "corretta": true, "spiegazione": "Corretta: l'IDS è un controllo rilevativo (detective) che analizza copie del traffico senza interromperlo, mentre l'IPS è un controllo preventivo (preventive) posto sul percorso dei pacchetti in grado di scartarli." },
+            { "id": "B", "testo": "L'IDS analizza esclusivamente il traffico cifrato TLS; l'IPS opera solo a livello fisico (Layer 1 OSI)", "corretta": false, "spiegazione": "Errata: entrambi operano principalmente tra Layer 3 e Layer 7 per ispezionare header e payload, e nessuno dei due può ispezionare traffico TLS senza terminazione/decifratura." },
+            { "id": "C", "testo": "L'IDS sostituisce completamente il firewall perimetrale; l'IPS serve solo a fare backup dei log", "corretta": false, "spiegazione": "Errata: né l'IDS né l'IPS sono sistemi di archiviazione log (compito di SIEM/Syslog) e l'IDS, non bloccando traffico, non può sostituire un firewall." }
+          ]
+        },
+        {
+          "id": "D1_Q07", "difficolta": 7, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Perché nei protocolli moderni (come TLS) si utilizza la crittografia asimmetrica per lo scambio delle chiavi e la crittografia simmetrica (es. AES) per i dati della sessione?",
+          "risposte": [
+            { "id": "A", "testo": "La crittografia asimmetrica risolve il problema della distribuzione sicura delle chiavi, mentre quella simmetrica è molto più veloce per grandi volumi di dati", "corretta": true, "spiegazione": "Corretta: questo approccio (cifratura ibrida) sfrutta le coppie pubblico/privato per negoziare un segreto senza canale pre-condiviso, delegando poi il bulk encryption ad algoritmi simmetrici computazionalmente leggeri." },
+            { "id": "B", "testo": "La crittografia simmetrica non è sicura su reti wireless, mentre quella asimmetrica non richiede mai certificati digitali", "corretta": false, "spiegazione": "Errata: AES (simmetrico) è lo standard su Wi-Fi (WPA2/WPA3), mentre la crittografia asimmetrica necessita tipicamente di certificati PKI per evitare attacchi Man-in-the-Middle." },
+            { "id": "C", "testo": "Gli algoritmi simmetrici possono cifrare solo file di testo, mentre quelli asimmetrici gestiscono anche flussi binari", "corretta": false, "spiegazione": "Errata: tutti gli algoritmi crittografici moderni operano su sequenze di bit/byte indipendentemente dal formato applicativo dei dati." }
+          ]
+        },
+        {
+          "id": "D1_Q08", "difficolta": 8, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Come viene creata una firma digitale standard su un documento e quale proprietà aggiuntiva garantisce rispetto a un semplice codice MAC simmetrico?",
+          "risposte": [
+            { "id": "A", "testo": "Si calcola l'hash del documento e lo si cifra con la chiave privata del mittente, garantendo anche il non ripudio", "corretta": true, "spiegazione": "Corretta: solo il possessore della chiave privata può produrre quella firma verificabile con la chiave pubblica corrispondente; ciò impedisce al mittente di negare la paternità (non ripudio), cosa impossibile con una chiave simmetrica condivisa." },
+            { "id": "B", "testo": "Si cifra l'intero documento con la chiave pubblica del mittente, garantendo la riservatezza assoluta", "corretta": false, "spiegazione": "Errata: cifrare con la chiave pubblica serve a garantire riservatezza verso il destinatario (usando la chiave pubblica del destinatario), non a firmare un documento." },
+            { "id": "C", "testo": "Si applica due volte l'algoritmo SHA-512 concatenato all'indirizzo IP del mittente", "corretta": false, "spiegazione": "Errata: un doppio hash senza crittografia asimmetrica non lega il documento a un'identità crittografica verificabile e non offre alcun non ripudio." }
+          ]
+        },
+        {
+          "id": "D1_Q09", "difficolta": 9, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "In una Public Key Infrastructure (PKI), qual è il ruolo primario della Certification Authority (CA)?",
+          "risposte": [
+            { "id": "A", "testo": "Verificare l'identità del richiedente ed emettere certificati digitali X.509 firmandoli con la propria chiave privata", "corretta": true, "spiegazione": "Corretta: la CA agisce come terza parte fidata (Trusted Third Party) legando crittograficamente una chiave pubblica all'identità del soggetto (Subject) tramite la propria firma sul certificato." },
+            { "id": "B", "testo": "Custodire copie di tutte le chiavi private degli utenti per decifrare il traffico HTTPS aziendale", "corretta": false, "spiegazione": "Errata: le chiavi private vengono generate e custodite dal proprietario del certificato (end-entity); una CA pubblica non riceve mai la chiave privata del richiedente durante una CSR." },
+            { "id": "C", "testo": "Tradurre i nomi di dominio FQDN nei rispettivi indirizzi IPv4 e IPv6", "corretta": false, "spiegazione": "Errata: la risoluzione dei nomi di dominio in indirizzi IP è funzione del protocollo DNS, non della PKI." }
+          ]
+        },
+        {
+          "id": "D1_Q10", "difficolta": 10, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Nel framework AAA (Authentication, Authorization, Accounting), quale funzione svolge specificamente la componente Accounting?",
+          "risposte": [
+            { "id": "A", "testo": "Tracciare e registrare le attività dell'utente, la durata delle sessioni e le risorse consumate per scopi di audit e analisi forense", "corretta": true, "spiegazione": "Corretta: l'Accounting fornisce tracciabilità e non ripudio operativo attraverso log dettagliati (es. protocolli RADIUS o TACACS+ Accounting)." },
+            { "id": "B", "testo": "Creare automaticamente nuovi account utente su Active Directory quando un dipendente viene assunto", "corretta": false, "spiegazione": "Errata: la creazione automatizzata delle identità rientra nei processi di Identity Lifecycle Management / Provisioning, non nell'Accounting AAA." },
+            { "id": "C", "testo": "Bloccare gli indirizzi IP sorgente dopo cinque tentativi di accesso errati", "corretta": false, "spiegazione": "Errata: il blocco automatico degli account o degli IP (account lockout / rate limiting) è un controllo preventivo legato all'autenticazione, non all'accounting." }
+          ]
+        },
+        {
+          "id": "D1_Q11", "difficolta": 11, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Secondo l'architettura Zero Trust definita dal NIST SP 800-207, quale componente è responsabile dell'abilitazione, monitoraggio e terminazione effettiva della connessione tra un soggetto e una risorsa aziendale?",
+          "risposte": [
+            { "id": "A", "testo": "Policy Enforcement Point (PEP)", "corretta": true, "spiegazione": "Corretta: nel NIST SP 800-207, il PEP opera nel Data Plane e applica concretamente le decisioni prese dal Policy Engine (PE) e comunicate dal Policy Administrator (PA)." },
+            { "id": "B", "testo": "Security Information and Event Management (SIEM)", "corretta": false, "spiegazione": "Errata: nel NIST SP 800-207 il SIEM funge da sorgente di dati esterni (Data Input) per alimentare il Policy Engine, ma non intercetta né termina direttamente le sessioni nel Data Plane." },
+            { "id": "C", "testo": "Certificate Revocation List (CRL)", "corretta": false, "spiegazione": "Errata: la CRL è un elenco statico di certificati revocati, non un componente architetturale attivo di controllo delle sessioni Zero Trust." }
+          ]
+        },
+        {
+          "id": "D1_Q12", "difficolta": 12, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale vantaggio offre il modello ABAC (Attribute-Based Access Control) rispetto al modello RBAC (Role-Based Access Control) tradizionale?",
+          "risposte": [
+            { "id": "A", "testo": "Valuta dinamicamente attributi combinati di soggetto, risorsa, azione e contesto ambientale (es. orario, geolocalizzazione, postura del dispositivo)", "corretta": true, "spiegazione": "Corretta: ABAC (spesso implementato con XACML) evita l'esplosione dei ruoli ('role explosion') permettendo policy granulari contestuali in tempo reale." },
+            { "id": "B", "testo": "Consente al proprietario di ogni singolo file di delegare arbitrariamente i permessi ad altri utenti senza regole centralizzate", "corretta": false, "spiegazione": "Errata: questa è la definizione di DAC (Discretionary Access Control), dove il controllo è a discrezione dell'owner della risorsa." },
+            { "id": "C", "testo": "Assegna a ogni oggetto un'etichetta di classificazione rigida (es. Top Secret) confrontandola con il nulla osta dell'utente senza considerare il contesto", "corretta": false, "spiegazione": "Errata: questo descrive il modello MAC (Mandatory Access Control, es. Bell-LaPadula), non ABAC." }
+          ]
+        },
+        {
+          "id": "D1_Q13", "difficolta": 13, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale problema operativo e di privacy delle interrogazioni OCSP standard viene risolto dalla tecnica dell'OCSP Stapling (RFC 6066)?",
+          "risposte": [
+            { "id": "A", "testo": "Il server web interroga periodicamente la CA e allega ('pinza') la risposta OCSP firmata e marcata temporalmente direttamente nell'handshake TLS", "corretta": true, "spiegazione": "Corretta: l'OCSP Stapling elimina la latenza di connessione verso il responder della CA da parte del client ed evita che la CA tracci quali siti l'utente sta visitando." },
+            { "id": "B", "testo": "Permette al browser del client di bypassare completamente la verifica della catena di certificati se il server della CA non risponde", "corretta": false, "spiegazione": "Errata: ignorare la verifica della catena o il fallimento del controllo di revoca ('soft-fail') è una debolezza di sicurezza, non il meccanismo dell'OCSP Stapling." },
+            { "id": "C", "testo": "Sostituisce i certificati X.509 con chiavi simmetriche pre-condivise (PSK) in ogni connessione HTTPS pubblica", "corretta": false, "spiegazione": "Errata: l'OCSP Stapling lavora interamente nell'ecosistema dei certificati X.509 asimmetrici per verificarne lo stato di revoca." }
+          ]
+        },
+        {
+          "id": "D1_Q14", "difficolta": 14, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Perché lo scambio di chiavi RSA statico è stato rimosso da TLS 1.3 (RFC 8446) a favore di meccanismi effimeri come ECDHE?",
+          "risposte": [
+            { "id": "A", "testo": "Perché lo scambio RSA statico non garantisce la Perfect Forward Secrecy (PFS): la compromissione futura della chiave privata del server permette di decifrare tutto il traffico registrato in passato", "corretta": true, "spiegazione": "Corretta: con ECDHE (Elliptic Curve Diffie-Hellman Ephemeral), ogni sessione genera una coppia di chiavi effimere distrutte al termine della connessione, proteggendo le sessioni passate anche se la chiave privata del certificato viene compromessa." },
+            { "id": "B", "testo": "Perché l'algoritmo RSA non supporta chiavi superiori a 1024 bit nei protocolli di trasporto", "corretta": false, "spiegazione": "Errata: RSA supporta comunemente chiavi a 2048 o 4096 bit (e in TLS 1.3 resta usato per la firma digitale dei certificati nell'autenticazione), ma non per lo scambio chiavi." },
+            { "id": "C", "testo": "Perché ECDHE non richiede alcuna operazione matematica asimmetrica e funziona esclusivamente tramite tabelle di lookup", "corretta": false, "spiegazione": "Errata: ECDHE si basa sulla moltiplicazione scalare su curve ellittiche, che è un'operazione crittografica asimmetrica." }
+          ]
+        },
+        {
+          "id": "D1_Q15", "difficolta": 15, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale vantaggio fondamentale offre una modalità di cifratura AEAD (Authenticated Encryption with Associated Data), come AES-GCM, rispetto al solo utilizzo di AES-CBC?",
+          "risposte": [
+            { "id": "A", "testo": "Fornisce contemporaneamente riservatezza del testo cifrato e autenticità/integrità sia del ciphertext sia dei metadati in chiaro (AAD) tramite un tag di autenticazione", "corretta": true, "spiegazione": "Corretta: AES-CBC garantisce solo riservatezza ed è vulnerabile ad attacchi di malleabilità e padding oracle (es. POODLE) se non abbinato correttamente a un HMAC (Encrypt-then-MAC); AES-GCM integra nativamente il tag GHASH." },
+            { "id": "B", "testo": "Permette di riutilizzare lo stesso Initialization Vector (IV / Nonce) infinite volte con la stessa chiave senza compromettere la sicurezza", "corretta": false, "spiegazione": "Errata: in AES-GCM il riutilizzo di un Nonce con la stessa chiave è catastrofico, poiché consente di recuperare la chiave di autenticazione H e annullare sia riservatezza sia integrità." },
+            { "id": "C", "testo": "Elimina la necessità di una chiave segreta condivisa utilizzando esclusivamente l'hash dell'header IP", "corretta": false, "spiegazione": "Errata: AES-GCM è un cifrario simmetrico che richiede una chiave segreta condivisa (128, 192 o 256 bit)." }
+          ]
+        },
+        {
+          "id": "D1_Q16", "difficolta": 16, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è la differenza architetturale e di impiego principale tra un TPM (Trusted Platform Module) 2.0 e un HSM (Hardware Security Module) di rete?",
+          "risposte": [
+            { "id": "A", "testo": "Il TPM è legato fisicamente a un singolo host per radicare l'integrità del boot (misurando il firmware nei registri PCR) e sigillare chiavi locali; l'HSM è un dispositivo ad alte prestazioni per operazioni crittografiche centralizzate multi-applicazione (es. CA root)", "corretta": true, "spiegazione": "Corretta: il TPM (ISO/IEC 11889) è progettato come Root of Trust locale per attestation e BitLocker/disk encryption, non per migliaia di operazioni di firma al secondo; l'HSM (certificato FIPS 140-3 Livello 3/4) è ottimizzato per throughput elevato, gestione multi-tenant e zeroizzazione su manomissione fisica." },
+            { "id": "B", "testo": "Il TPM può esportare liberamente le chiavi private in chiaro verso il sistema operativo, mentre l'HSM non supporta algoritmi a curva ellittica", "corretta": false, "spiegazione": "Errata: né il TPM né l'HSM permettono l'esportazione in chiaro delle chiavi non esportabili, ed entrambi supportano pienamente gli algoritmi ECC." },
+            { "id": "C", "testo": "Il TPM è un servizio software basato su cloud pubblico, mentre l'HSM è un modulo integrato obbligatoriamente su ogni scheda madre consumer", "corretta": false, "spiegazione": "Errata: i ruoli fisici sono invertiti: il TPM è presente sulle schede madri (discreto o firmware fTPM), mentre gli HSM sono appliance dedicate o schede PCIe di classe enterprise." }
+          ]
+        },
+        {
+          "id": "D1_Q17", "difficolta": 17, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "In un'architettura di Deception Technology, perché gli honeytoken (es. credenziali fittizie in memoria LSASS o chiavi API AWS esca) offrono un rapporto segnale/rumore superiore rispetto ai sistemi di anomaly detection tradizionali?",
+          "risposte": [
+            { "id": "A", "testo": "Poiché non hanno alcun utilizzo legittimo nei flussi operativi, qualsiasi interazione o tentativo di utilizzo genera un alert ad altissima fedeltà con tasso di falsi positivi prossimo allo zero", "corretta": true, "spiegazione": "Corretta: mentre i sistemi basati su anomalie statistiche soffrono di falsi positivi dovuti a variazioni lecite del traffico, un honeytoken non viene mai toccato da utenti o processi legittimi, garantendo che ogni attivazione indichi attività malevola o errore critico." },
+            { "id": "B", "testo": "Perché gli honeytoken applicano automaticamente patch al kernel del sistema operativo non appena vengono letti da un processo non firmato", "corretta": false, "spiegazione": "Errata: gli honeytoken sono artefatti di rilevamento (es. Canarytokens) che notificano l'accesso/utilizzo al SIEM/SOAR, non meccanismi di live kernel patching." },
+            { "id": "C", "testo": "Perché cifrano automaticamente l'intero disco rigido dell'attaccante tramite reverse shell", "corretta": false, "spiegazione": "Errata: l'attacco attivo o contrattacco (hack-back) non fa parte della Deception Technology difensiva e viola i quadri normativi." }
+          ]
+        },
+        {
+          "id": "D1_Q18", "difficolta": 18, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Perché per l'archiviazione sicura delle password si preferisce Argon2id rispetto a PBKDF2-HMAC-SHA256 o a un singolo hash SHA-256 con salt?",
+          "risposte": [
+            { "id": "A", "testo": "Argon2id è una funzione memory-hard che impone un elevato consumo configurabile di RAM oltre al tempo di CPU, vanificando il parallelismo massivo su GPU e ASIC e resistendo ai side-channel attack", "corretta": true, "spiegazione": "Corretta: PBKDF2 e SHA-256 sono puramente CPU-bound e richiedono pochissima memoria, permettendo a GPU/ASIC di eseguire miliardi di tentativi al secondo; Argon2id (vincitore della Password Hashing Competition, RFC 9106) combina l'accesso indipendente dai dati (Argon2i) contro side-channel e dipendente dai dati (Argon2d) contro attacchi TMTO (Time-Memory Trade-Off)." },
+            { "id": "B", "testo": "Argon2id permette di decifrare la password dell'utente nel caso in cui l'amministratore di sistema debba recuperarla", "corretta": false, "spiegazione": "Errata: Argon2id è una Key Derivation Function / password hash unidirezionale; le password archiviate con Argon2id non sono in alcun modo decifrabili." },
+            { "id": "C", "testo": "Argon2id elimina la necessità di generare un salt casuale unico per ogni utente grazie a una costante globale fissa", "corretta": false, "spiegazione": "Errata: Argon2id richiede obbligatoriamente un salt crittograficamente casuale e univoco per ogni password per impedire attacchi precomputati (rainbow table) e individuazione di password identiche." }
+          ]
+        },
+        {
+          "id": "D1_Q19", "difficolta": 19, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Su quale problema matematico computazionalmente difficile si fonda lo standard NIST FIPS 203 (ML-KEM / CRYSTALS-Kyber) per la crittografia post-quantistica?",
+          "risposte": [
+            { "id": "A", "testo": "Module Learning With Errors (MLWE) su reticoli strutturati (lattices), resistente all'algoritmo quantistico di Shor", "corretta": true, "spiegazione": "Corretta: l'algoritmo di Shor risolve in tempo polinomiale su un computer quantistico sia la fattorizzazione di interi (RSA) sia il logaritmo discreto (DH/ECDH); ML-KEM basa la propria sicurezza sulla difficoltà di risolvere sistemi lineari perturbati da rumore su reticoli modulari." },
+            { "id": "B", "testo": "Il problema del logaritmo discreto su curve ellittiche supersingolari (SIKE), immune a qualsiasi algoritmo quantistico", "corretta": false, "spiegazione": "Errata: SIKE (basato su isogenie di curve ellittiche supersingolari) è stato violato nel 2022 da Castryck e Decru su un singolo PC classico ed è stato escluso dalla standardizzazione NIST." },
+            { "id": "C", "testo": "La fattorizzazione di numeri semiprimi a 16.384 bit, che rende inefficiente l'algoritmo di Grover", "corretta": false, "spiegazione": "Errata: la fattorizzazione è vulnerabile all'algoritmo di Shor (non Grover), e aumentare la lunghezza delle chiavi RSA non fornisce una difesa pratica contro computer quantistici fault-tolerant." }
+          ]
+        },
+        {
+          "id": "D1_Q20", "difficolta": 20, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Nel confronto formale tra sistemi di dimostrazione a conoscenza zero non interattivi zk-SNARK e zk-STARK, quale vantaggio strutturale offrono gli zk-STARK?",
+          "risposte": [
+            { "id": "A", "testo": "Eliminano la necessità di un Trusted Setup iniziale (trasparenza tramite randomness pubblica) e sono post-quantum safe poiché si basano esclusivamente su funzioni di hash resistenti alle collisioni", "corretta": true, "spiegazione": "Corretta: la 'T' di zk-STARK sta per 'Transparent'; a differenza degli zk-SNARK basati su pairing bilineari di curve ellittiche (che richiedono una cerimonia di Trusted Setup con 'toxic waste' e sono vulnerabili all'algoritmo di Shor), gli zk-STARK usano IOP (Interactive Oracle Proofs) e alberi di Merkle hash-based, pur generando prove di dimensione maggiore." },
+            { "id": "B", "testo": "Producono prove di dimensione costante inferiore a 300 byte indipendentemente dalla complessità del circuito aritmetico verificato", "corretta": false, "spiegazione": "Errata: le prove ultra-compatte di dimensione costante (es. Groth16, ~128-288 byte) sono una caratteristica tipica degli zk-SNARK, mentre gli zk-STARK hanno prove sensibilmente più grandi (decine di KB) con crescita polilogaritmica." },
+            { "id": "C", "testo": "Non richiedono la proprietà di Soundness (correttezza), permettendo al Prover di dimostrare enunciati falsi per ottimizzare i tempi di verifica", "corretta": false, "spiegazione": "Errata: Completeness, Soundness e Zero-Knowledge sono i tre assiomi fondamentali indispensabili per qualsiasi protocollo Zero-Knowledge valido; senza Soundness il sistema non avrebbe alcuna validità crittografica." }
+          ]
+        }
+      ]
+    },
+    {
+      "id_dominio": "2.0",
+      "nome_dominio": "Threats, Vulnerabilities, and Mitigations",
+      "quesiti": [
+        {
+          "id": "D2_Q01", "difficolta": 1, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la caratteristica distintiva di un attacco di Spear Phishing rispetto a una campagna di phishing generico?",
+          "risposte": [
+            { "id": "A", "testo": "È mirato a uno specifico individuo o organizzazione utilizzando informazioni contestuali personalizzate", "corretta": true, "spiegazione": "Il targeting selettivo aumenta la credibilità del messaggio sfruttando dettagli reali della vittima." },
+            { "id": "B", "testo": "Viene condotto esclusivamente tramite chiamate vocali automatizzate su rete telefonica", "corretta": false, "spiegazione": "L'uso del canale telefonico per l'ingegneria sociale definisce il vishing, non lo spear phishing." },
+            { "id": "C", "testo": "Sfrutta unicamente vulnerabilità hardware del firmware BIOS senza interazione dell'utente", "corretta": false, "spiegazione": "Il phishing agisce sul fattore umano tramite inganno comunicativo, non su difetti hardware." }
+          ]
+        },
+        {
+          "id": "D2_Q02", "difficolta": 2, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è l'effetto principale di un'infezione da Ransomware su un sistema aziendale?",
+          "risposte": [
+            { "id": "A", "testo": "Rende inaccessibili i dati cifrandoli e richiede il pagamento di un riscatto per la chiave di decifratura", "corretta": true, "spiegazione": "La cifratura estorsiva colpisce la disponibilità dei dati per forzare un pagamento." },
+            { "id": "B", "testo": "Aumenta silenziosamente la velocità di clock della CPU per ottimizzare i calcoli matematici", "corretta": false, "spiegazione": "L'uso non autorizzato di risorse di calcolo per valute digitali riguarda il cryptojacking." },
+            { "id": "C", "testo": "Ripara automaticamente le vulnerabilità del sistema operativo installando patch non ufficiali", "corretta": false, "spiegazione": "I malware compromettono la sicurezza del sistema e non eseguono attività di manutenzione difensiva." }
+          ]
+        },
+        {
+          "id": "D2_Q03", "difficolta": 3, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "In cosa consiste la tecnica di ingegneria sociale nota come Pretexting?",
+          "risposte": [
+            { "id": "A", "testo": "Nella creazione di uno scenario o identità fittizia credibile per indurre la vittima a rivelare informazioni", "corretta": true, "spiegazione": "Un pretesto plausibile riduce le difese critiche della vittima inducendola a collaborare." },
+            { "id": "B", "testo": "Nell'osservazione fisica dello schermo o della tastiera di un utente in un luogo pubblico", "corretta": false, "spiegazione": "L'osservazione diretta alle spalle della vittima corrisponde al shoulder surfing." },
+            { "id": "C", "testo": "Nell'invio massivo di pacchetti ICMP per saturare la banda di un server web", "corretta": false, "spiegazione": "La saturazione di rete mediante traffico anomalo è un attacco tecnico di tipo flood." }
+          ]
+        },
+        {
+          "id": "D2_Q04", "difficolta": 4, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Come si comporta un malware classificato come Trojan Horse?",
+          "risposte": [
+            { "id": "A", "testo": "Si presenta come un programma legittimo e utile, ma esegue codice malevolo nascosto al suo interno", "corretta": true, "spiegazione": "Il camuffamento induce l'utente a eseguire volontariamente il software apparentemente innocuo." },
+            { "id": "B", "testo": "Si autoreplica autonomamente attraverso la rete sfruttando vulnerabilità senza alcun intervento umano", "corretta": false, "spiegazione": "La propagazione autonoma in rete senza file ospite caratterizza i worm." },
+            { "id": "C", "testo": "Opera esclusivamente a livello fisico danneggiando i cavi in fibra ottica dello switch", "corretta": false, "spiegazione": "Un trojan è un componente software eseguito nel sistema operativo, non un danno fisico." }
+          ]
+        },
+        {
+          "id": "D2_Q05", "difficolta": 5, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la misura preventiva più diretta per mitigare lo sfruttamento di vulnerabilità software già note al produttore?",
+          "risposte": [
+            { "id": "A", "testo": "Applicare tempestivamente gli aggiornamenti di sicurezza tramite un processo strutturato di Patch Management", "corretta": true, "spiegazione": "Le patch correggono il codice difettoso eliminando la causa radice della vulnerabilità." },
+            { "id": "B", "testo": "Cambiare frequentemente lo sfondo del desktop e il nome host dei client aziendali", "corretta": false, "spiegazione": "Modifiche estetiche o di denominazione non alterano il codice vulnerabile dei servizi." },
+            { "id": "C", "testo": "Disattivare completamente la registrazione dei log di sistema per risparmiare spazio su disco", "corretta": false, "spiegazione": "La disattivazione dei log riduce la visibilità forense senza mitigare alcuna falla." }
+          ]
+        },
+        {
+          "id": "D2_Q06", "difficolta": 6, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è la difesa architetturale più efficace contro le vulnerabilità di tipo SQL Injection nelle applicazioni web?",
+          "risposte": [
+            { "id": "A", "testo": "Utilizzare query parametrizzate (Prepared Statements) per separare il codice SQL dai dati forniti dall'utente", "corretta": true, "spiegazione": "La parametrizzazione impedisce all'interprete del database di valutare l'input come comando." },
+            { "id": "B", "testo": "Nascondere i campi del modulo HTML utilizzando attributi CSS di invisibilità", "corretta": false, "spiegazione": "I controlli sul lato client sono facilmente aggirabili intercettando le richieste HTTP." },
+            { "id": "C", "testo": "Abilitare la compressione GZIP sulle risposte del web server", "corretta": false, "spiegazione": "La compressione HTTP ottimizza il trasferimento dati ma non valida l'input applicativo." }
+          ]
+        },
+        {
+          "id": "D2_Q07", "difficolta": 7, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Cosa differenzia una vulnerabilità Stored Cross-Site Scripting (XSS) da una Reflected XSS?",
+          "risposte": [
+            { "id": "A", "testo": "Nello Stored XSS l'input malevolo viene salvato sul server e servito a tutti gli utenti che visitano la pagina", "corretta": true, "spiegazione": "La persistenza nel database rende l'esposizione continua senza richiedere link malevoli ad hoc." },
+            { "id": "B", "testo": "Nello Stored XSS il codice viene eseguito direttamente sul kernel del database anziché nel browser", "corretta": false, "spiegazione": "Entrambe le varianti XSS vengono eseguite nel contesto del browser della vittima." },
+            { "id": "C", "testo": "Il Reflected XSS funziona solo su connessioni cifrate tramite certificati autofirmati", "corretta": false, "spiegazione": "La cifratura del canale TLS non impedisce l'iniezione di script non sanitizzati." }
+          ]
+        },
+        {
+          "id": "D2_Q08", "difficolta": 8, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Perché un attacco DDoS (Distributed Denial of Service) risulta significativamente più complesso da mitigare rispetto a un DoS proveniente da singola sorgente?",
+          "risposte": [
+            { "id": "A", "testo": "Il traffico proviene simultaneamente da migliaia di nodi compromessi geograficamente distribuiti, rendendo inefficace il blocco di un singolo IP", "corretta": true, "spiegazione": "La distribuzione delle sorgenti richiede scrubbing center e filtraggio comportamentale." },
+            { "id": "B", "testo": "Utilizza esclusivamente protocolli di livello fisico che bypassano tutti gli apparati di routing", "corretta": false, "spiegazione": "Il traffico DDoS attraversa normalmente l'infrastruttura IP e i router Internet." },
+            { "id": "C", "testo": "Cifra automaticamente i dischi rigidi di tutti i client che visitano il sito web colpito", "corretta": false, "spiegazione": "Il DDoS mira all'indisponibilità del servizio, non alla cifratura dei dati locali." }
+          ]
+        },
+        {
+          "id": "D2_Q09", "difficolta": 9, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Come si realizza un attacco On-Path (Man-in-the-Middle) tramite ARP Spoofing su una rete locale Ethernet?",
+          "risposte": [
+            { "id": "A", "testo": "Inviando risposte ARP falsificate per associare l'indirizzo MAC dell'attaccante all'indirizzo IP del gateway", "corretta": true, "spiegazione": "L'avvelenamento della cache ARP devia i frame di livello 2 attraverso l'host intercettore." },
+            { "id": "B", "testo": "Modificando i record autoritativi DNS sui root server globali di Internet", "corretta": false, "spiegazione": "ARP opera esclusivamente all'interno del dominio di broadcast locale di livello 2." },
+            { "id": "C", "testo": "Sovrascrivendo il firmware dei cavi patch Cat6 tramite impulsi elettromagnetici", "corretta": false, "spiegazione": "I cavi passivi non contengono firmware né tabelle di risoluzione degli indirizzi." }
+          ]
+        },
+        {
+          "id": "D2_Q10", "difficolta": 10, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Cosa identifica esattamente il termine 'vulnerabilità Zero-Day'?",
+          "risposte": [
+            { "id": "A", "testo": "Una falla di sicurezza ancora sconosciuta al produttore del software, per la quale non è ancora disponibile una patch ufficiale", "corretta": true, "spiegazione": "L'assenza di correzioni ufficiali impone l'uso di controlli compensativi e rilevamento comportamentale." },
+            { "id": "B", "testo": "Una vulnerabilità pubblicata da oltre un anno che gli amministratori hanno dimenticato di aggiornare", "corretta": false, "spiegazione": "Le falle già note e provviste di patch rientrano nelle vulnerabilità N-day." },
+            { "id": "C", "testo": "Un bug grafico che si manifesta esclusivamente il primo giorno di ogni anno solare", "corretta": false, "spiegazione": "Il termine indica i giorni trascorsi dalla pubblicazione della patch, non una data di calendario." }
+          ]
+        },
+        {
+          "id": "D2_Q11", "difficolta": 11, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale meccanismo difensivo previene efficacemente gli attacchi Cross-Site Request Forgery (CSRF)?",
+          "risposte": [
+            { "id": "A", "testo": "L'uso di token anti-CSRF univoci e imprevedibili per sessione combinato con l'attributo cookie SameSite", "corretta": true, "spiegazione": "Il server verifica che la richiesta provenga legittimamente dalla propria interfaccia applicativa." },
+            { "id": "B", "testo": "La disabilitazione del protocollo DNS sul server web di produzione", "corretta": false, "spiegazione": "Il CSRF sfrutta l'invio automatico dei cookie di sessione da parte del browser, non il DNS." },
+            { "id": "C", "testo": "La conversione di tutte le richieste HTTP POST in richieste HTTP GET con parametri nell'URL", "corretta": false, "spiegazione": "Spostare azioni di modifica stato su richieste GET facilita ulteriormente gli attacchi CSRF." }
+          ]
+        },
+        {
+          "id": "D2_Q12", "difficolta": 12, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Su quale principio si basa la tecnica di movimento laterale nota come Pass-the-Hash (PtH)?",
+          "risposte": [
+            { "id": "A", "testo": "Sull'autenticazione verso sistemi remoti utilizzando direttamente l'hash NTLM estratto dalla memoria senza conoscere la password in chiaro", "corretta": true, "spiegazione": "Nel protocollo NTLM l'hash funge da equivalente della password durante la sfida crittografica." },
+            { "id": "B", "testo": "Sulla decifratura istantanea degli hash SHA-512 mediante inversione matematica diretta", "corretta": false, "spiegazione": "Le funzioni di hash sono unidirezionali; il PtH riutilizza il digest senza invertirlo." },
+            { "id": "C", "testo": "Sull'inserimento fisico di una smart card clonata nel lettore del controller di dominio", "corretta": false, "spiegazione": "Il PtH opera a livello di protocollo di autenticazione di rete usando credenziali estratte." }
+          ]
+        },
+        {
+          "id": "D2_Q13", "difficolta": 13, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è il vettore principale di un Software Supply Chain Attack orientato alle dipendenze applicative?",
+          "risposte": [
+            { "id": "A", "testo": "L'iniezione di codice malevolo in librerie open-source, repository di pacchetti o pipeline CI/CD a monte prima della distribuzione", "corretta": true, "spiegazione": "La compromissione a monte propaga il codice alterato attraverso aggiornamenti firmati e attendibili." },
+            { "id": "B", "testo": "Il furto fisico dei camion che trasportano i server rack dal produttore al data center", "corretta": false, "spiegazione": "Il furto fisico riguarda la logistica hardware, non le dipendenze del ciclo di sviluppo software." },
+            { "id": "C", "testo": "L'invio di email di spam agli utenti finali dopo l'installazione del software", "corretta": false, "spiegazione": "Lo spam post-installazione è un'attività esterna al processo di costruzione del software." }
+          ]
+        },
+        {
+          "id": "D2_Q14", "difficolta": 14, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale rischio introduce una vulnerabilità Server-Side Request Forgery (SSRF) in un'infrastruttura cloud?",
+          "risposte": [
+            { "id": "A", "testo": "Permette di indurre il server applicativo a interrogare servizi interni non esposti, come gli endpoint di metadati dell'istanza", "corretta": true, "spiegazione": "Il server agisce da proxy involontario sfruttando la propria posizione fidata nella rete interna." },
+            { "id": "B", "testo": "Consente al browser del client di bypassare il firewall locale del sistema operativo dell'utente", "corretta": false, "spiegazione": "La richiesta anomala viene originata dal server backend, non dal browser del client." },
+            { "id": "C", "testo": "Corrompe automaticamente la tabella delle partizioni del disco di avvio del client", "corretta": false, "spiegazione": "L'SSRF riguarda la manipolazione delle richieste di rete lato server, non lo storage client." }
+          ]
+        },
+        {
+          "id": "D2_Q15", "difficolta": 15, "livello": "Avanzato (Security Engineer)",
+          "domanda": "In che modo la combinazione di ASLR (Address Space Layout Randomization) e DEP/NX mitiga lo sfruttamento dei Buffer Overflow sullo stack?",
+          "risposte": [
+            { "id": "A", "testo": "ASLR randomizza le posizioni in memoria dei moduli eseguibili, mentre DEP/NX impedisce l'esecuzione di codice nelle aree dati come lo stack", "corretta": true, "spiegazione": "La randomizzazione ostacola i salti deterministici e i permessi di pagina bloccano l'esecuzione dati." },
+            { "id": "B", "testo": "ASLR riscrive automaticamente il codice sorgente C sostituendo le funzioni insicure durante l'esecuzione", "corretta": false, "spiegazione": "ASLR opera a livello di gestione della memoria virtuale del sistema operativo, non sul codice." },
+            { "id": "C", "testo": "DEP/NX cifra ogni byte dello stack con una chiave RSA diversa a ogni ciclo di clock", "corretta": false, "spiegazione": "DEP/NX utilizza il bit hardware No-Execute nelle tabelle delle pagine, non la cifratura." }
+          ]
+        },
+        {
+          "id": "D2_Q16", "difficolta": 16, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è la causa fondamentale di una vulnerabilità Race Condition di tipo TOCTOU (Time-of-Check to Time-of-Use)?",
+          "risposte": [
+            { "id": "A", "testo": "L'assenza di atomicità tra la verifica dei permessi o dello stato di una risorsa e il suo successivo utilizzo, permettendo una modifica intermedia", "corretta": true, "spiegazione": "La finestra temporale non sincronizzata consente a un processo concorrente di alterare la risorsa." },
+            { "id": "B", "testo": "L'utilizzo di chiavi crittografiche simmetriche con lunghezza inferiore a 256 bit", "corretta": false, "spiegazione": "La dimensione delle chiavi riguarda la robustezza crittografica, non la concorrenza tra processi." },
+            { "id": "C", "testo": "La perdita di sincronizzazione NTP superiore a un secondo tra due server web bilanciati", "corretta": false, "spiegazione": "Il drift dell'orologio di rete non determina condizioni di gara sull'accesso locale alle risorse." }
+          ]
+        },
+        {
+          "id": "D2_Q17", "difficolta": 17, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Perché la deserializzazione non validata di flussi di byte provenienti da sorgenti non attendibili può condurre all'esecuzione arbitraria di codice?",
+          "risposte": [
+            { "id": "A", "testo": "La ricostruzione degli oggetti può invocare automaticamente metodi magici o distruttori concatenando classi presenti nel classpath (gadget chain)", "corretta": true, "spiegazione": "L'istanziazione dinamica attiva comportamenti collaterali nelle librerie già caricate dall'applicazione." },
+            { "id": "B", "testo": "Il formato JSON esegue nativamente istruzioni assembly x86 durante il parsing sintattico", "corretta": false, "spiegazione": "I formati testuali puri come JSON non istanziano classi complesse né eseguono codice nativo." },
+            { "id": "C", "testo": "La deserializzazione disabilita automaticamente i permessi SELinux e AppArmor del sistema ospite", "corretta": false, "spiegazione": "Il runtime applicativo non ha privilegi per disattivare i controlli di accesso obbligatori del kernel." }
+          ]
+        },
+        {
+          "id": "D2_Q18", "difficolta": 18, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quale debolezza architetturale del protocollo Kerberos viene sfruttata nella tecnica nota come Kerberoasting?",
+          "risposte": [
+            { "id": "A", "testo": "Qualsiasi utente autenticato può richiedere un ticket TGS per un Service Principal Name (SPN), cifrato con l'hash della password dell'account di servizio, e tentarne il cracking offline", "corretta": true, "spiegazione": "La cifratura del ticket con il segreto del servizio consente attacchi offline senza generare tentativi di login." },
+            { "id": "B", "testo": "Il Key Distribution Center (KDC) trasmette tutte le chiavi segrete degli utenti in chiaro tramite broadcast UDP", "corretta": false, "spiegazione": "Kerberos non trasmette mai chiavi segrete in chiaro né utilizza broadcast per l'emissione dei ticket." },
+            { "id": "C", "testo": "I ticket TGT hanno validità illimitata e non possono essere revocati nemmeno ricreando l'account krbtgt", "corretta": false, "spiegazione": "I ticket hanno durata limitata e la doppia rotazione dell'account krbtgt invalida i TGT esistenti." }
+          ]
+        },
+        {
+          "id": "D2_Q19", "difficolta": 19, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "In che modo le vulnerabilità microarchitetturali basate sull'esecuzione speculativa (es. Spectre) consentono di aggirare l'isolamento della memoria?",
+          "risposte": [
+            { "id": "A", "testo": "Le istruzioni eseguite speculativamente prima del rollback lasciano tracce osservabili nella cache della CPU, misurabili tramite canali laterali temporali", "corretta": true, "spiegazione": "Lo stato microarchitetturale della cache non viene ripristinato quando la predizione del branch fallisce." },
+            { "id": "B", "testo": "Disattivano fisicamente la Memory Management Unit (MMU) permettendo la scrittura diretta su tutta la RAM", "corretta": false, "spiegazione": "L'esecuzione speculativa non disattiva la MMU né consente scritture permanenti non autorizzate." },
+            { "id": "C", "testo": "Sfruttano una collisione crittografica nei registri di controllo del controller PCIe", "corretta": false, "spiegazione": "Il fenomeno deriva dalla predizione dei salti e dalla gerarchia delle cache del processore." }
+          ]
+        },
+        {
+          "id": "D2_Q20", "difficolta": 20, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Come opera la tecnica Return-Oriented Programming (ROP) per aggirare la protezione DEP/NX e quale difesa hardware la contrasta direttamente?",
+          "risposte": [
+            { "id": "A", "testo": "Concatena brevi sequenze di istruzioni legittime già presenti in memoria eseguibile terminanti con 'ret' (gadget); viene contrastata da Control-Flow Integrity (CFI) e Shadow Stack", "corretta": true, "spiegazione": "Il riutilizzo di codice esistente non richiede pagine scrivibili ed eseguibili ma viola il flusso di controllo atteso." },
+            { "id": "B", "testo": "Inietta codice macchina direttamente nell'area heap e ne forza l'esecuzione tramite chiamate di sistema; viene contrastata dai firewall perimetrali", "corretta": false, "spiegazione": "L'esecuzione diretta dall'heap è bloccata da DEP/NX ed è esattamente ciò che il ROP evita." },
+            { "id": "C", "testo": "Modifica le tabelle di routing BGP per dirottare il flusso delle chiamate di funzione; viene contrastata da DNSSEC", "corretta": false, "spiegazione": "Il ROP manipola lo stack delle chiamate di un processo locale, non il routing di rete." }
+          ]
+        }
+      ]
+    },
+    {
+      "id_dominio": "3.0",
+      "nome_dominio": "Security Architecture",
+      "quesiti": [
+        {
+          "id": "D3_Q01", "difficolta": 1, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la funzione primaria di un firewall perimetrale all'interno di un'architettura di rete?",
+          "risposte": [
+            { "id": "A", "testo": "Controllare e filtrare il traffico di rete in ingresso e in uscita in base a un insieme di regole di sicurezza", "corretta": true, "spiegazione": "Il firewall separa zone con diverso livello di fiducia applicando policy di autorizzazione." },
+            { "id": "B", "testo": "Fornire alimentazione elettrica continua ai server in caso di blackout della rete pubblica", "corretta": false, "spiegazione": "La continuità elettrica è garantita dai gruppi di continuità (UPS), non dai firewall." },
+            { "id": "C", "testo": "Assegnare automaticamente gli indirizzi IP ai dispositivi connessi alla rete locale", "corretta": false, "spiegazione": "L'assegnazione dinamica degli indirizzi IP è svolta dal servizio DHCP." }
+          ]
+        },
+        {
+          "id": "D3_Q02", "difficolta": 2, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale obiettivo principale persegue l'impiego di una VPN (Virtual Private Network) per i lavoratori remoti?",
+          "risposte": [
+            { "id": "A", "testo": "Stabilire un canale di comunicazione cifrato su una rete pubblica per proteggere riservatezza e integrità dei dati", "corretta": true, "spiegazione": "L'incapsulamento crittografico estende in sicurezza il perimetro privato su reti non attendibili." },
+            { "id": "B", "testo": "Aumentare la velocità fisica della linea fibra ottica domestica oltre i limiti del provider", "corretta": false, "spiegazione": "La VPN introduce un lieve overhead crittografico e non aumenta la banda fisica disponibile." },
+            { "id": "C", "testo": "Sostituire la necessità di installare sistemi antivirus o EDR sui computer portatili", "corretta": false, "spiegazione": "La VPN protegge il trasporto dei dati in rete ma non rileva malware eseguiti sull'endpoint." }
+          ]
+        },
+        {
+          "id": "D3_Q03", "difficolta": 3, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale vantaggio architetturale offre la suddivisione di una rete locale tramite VLAN (Virtual LAN)?",
+          "risposte": [
+            { "id": "A", "testo": "Segmenta logicamente i dispositivi in domini di broadcast isolati anche quando sono collegati allo stesso switch fisico", "corretta": true, "spiegazione": "La segmentazione logica riduce la superficie di intercettazione e isola i reparti aziendali." },
+            { "id": "B", "testo": "Cifra automaticamente tutto il traffico applicativo tra i server con algoritmo AES-256", "corretta": false, "spiegazione": "Il tagging IEEE 802.1Q isola i frame a livello 2 ma non applica alcuna cifratura al payload." },
+            { "id": "C", "testo": "Elimina la necessità di utilizzare indirizzi IP per comunicare con Internet", "corretta": false, "spiegazione": "La comunicazione su reti geografiche richiede comunque l'indirizzamento IP di livello 3." }
+          ]
+        },
+        {
+          "id": "D3_Q04", "difficolta": 4, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Perché i server web accessibili dal pubblico vengono collocati in una DMZ (Screened Subnet) anziché nella LAN interna?",
+          "risposte": [
+            { "id": "A", "testo": "Per isolare i servizi esposti a Internet in modo che la compromissione di un server pubblico non offra accesso diretto alla rete interna", "corretta": true, "spiegazione": "La zona cuscinetto limita il raggio d'azione di un'eventuale intrusione proveniente dall'esterno." },
+            { "id": "B", "testo": "Perché nella DMZ i server sono immuni a qualsiasi vulnerabilità del sistema operativo", "corretta": false, "spiegazione": "La collocazione di rete non elimina i bug del software ma contiene l'impatto della violazione." },
+            { "id": "C", "testo": "Per consentire ai dipendenti di navigare su Internet senza alcuna regola di filtraggio", "corretta": false, "spiegazione": "La DMZ ospita servizi esposti verso l'esterno, non le postazioni client dei dipendenti." }
+          ]
+        },
+        {
+          "id": "D3_Q05", "difficolta": 5, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Cosa stabilisce il principio architetturale del Privilegio Minimo (Least Privilege)?",
+          "risposte": [
+            { "id": "A", "testo": "A ogni utente, processo o sistema devono essere concessi esclusivamente i permessi strettamente necessari per svolgere la propria funzione", "corretta": true, "spiegazione": "Limitare i diritti riduce i danni accidentali e l'impatto della compromissione di un account." },
+            { "id": "B", "testo": "Tutti gli utenti devono avere diritti di amministratore locale per evitare richieste di supporto al team IT", "corretta": false, "spiegazione": "L'assegnazione indiscriminata di privilegi amministrativi viola direttamente la sicurezza operativa." },
+            { "id": "C", "testo": "Le password devono avere una lunghezza massima di quattro caratteri per semplificarne la memorizzazione", "corretta": false, "spiegazione": "Il privilegio minimo riguarda l'ampiezza delle autorizzazioni, non la complessità delle credenziali." }
+          ]
+        },
+        {
+          "id": "D3_Q06", "difficolta": 6, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è la differenza fondamentale tra un firewall Stateless (Packet Filter) e uno Stateful?",
+          "risposte": [
+            { "id": "A", "testo": "Il firewall Stateful mantiene una tabella di stato delle connessioni attive, riconoscendo automaticamente i pacchetti di risposta legittimi", "corretta": true, "spiegazione": "La consapevolezza del contesto di sessione evita regole statiche eccessivamente permissive." },
+            { "id": "B", "testo": "Il firewall Stateless ispeziona il codice sorgente delle applicazioni web mentre quello Stateful opera solo sul cablaggio", "corretta": false, "spiegazione": "Entrambi operano sugli header di rete e trasporto, ma solo lo stateful traccia le sessioni." },
+            { "id": "C", "testo": "Il firewall Stateful non necessita di alcuna regola configurata dall'amministratore", "corretta": false, "spiegazione": "Anche i firewall stateful richiedono policy esplicite per autorizzare l'apertura delle connessioni." }
+          ]
+        },
+        {
+          "id": "D3_Q07", "difficolta": 7, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Quale ruolo svolge un Reverse Proxy posto davanti a un cluster di server applicativi?",
+          "risposte": [
+            { "id": "A", "testo": "Intercetta le richieste dei client esterni per conto dei server backend, nascondendone la topologia e gestendo terminazione TLS e bilanciamento", "corretta": true, "spiegazione": "Il reverse proxy protegge l'infrastruttura interna esponendo un unico punto di contatto controllato." },
+            { "id": "B", "testo": "Controlla esclusivamente la navigazione web in uscita dei dipendenti aziendali verso siti esterni", "corretta": false, "spiegazione": "Il controllo del traffico in uscita dei client interni è compito di un Forward Proxy." },
+            { "id": "C", "testo": "Esegue il backup incrementale dei database relazionali su nastri magnetici", "corretta": false, "spiegazione": "Il reverse proxy gestisce il flusso delle richieste di rete e non l'archiviazione dei backup." }
+          ]
+        },
+        {
+          "id": "D3_Q08", "difficolta": 8, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Come contribuisce lo standard IEEE 802.1X alla sicurezza dell'accesso alla rete cablata e wireless?",
+          "risposte": [
+            { "id": "A", "testo": "Blocca il traffico sulla porta finché il supplicant non completa l'autenticazione tramite authenticator verso un server RADIUS", "corretta": true, "spiegazione": "Il controllo di accesso basato su porta impedisce a dispositivi non autenticati di raggiungere la LAN." },
+            { "id": "B", "testo": "Assegna dinamicamente certificati SSL pubblici a tutti i siti web visitati dall'utente", "corretta": false, "spiegazione": "Lo standard 802.1X regola l'accesso al livello di collegamento, non l'emissione di certificati web." },
+            { "id": "C", "testo": "Comprime i pacchetti Ethernet per raddoppiare la capacità delle porte Gigabit", "corretta": false, "spiegazione": "802.1X è un framework di autenticazione EAP, non un meccanismo di compressione fisica." }
+          ]
+        },
+        {
+          "id": "D3_Q09", "difficolta": 9, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Nel modello di responsabilità condivisa nel Cloud, quale differenza sussiste tra IaaS (Infrastructure as a Service) e SaaS (Software as a Service)?",
+          "risposte": [
+            { "id": "A", "testo": "In IaaS il cliente gestisce sistema operativo, runtime e applicazioni, mentre in SaaS il provider gestisce l'intero stack lasciando al cliente dati e identità", "corretta": true, "spiegazione": "Il perimetro di controllo operativo del cliente si riduce passando da IaaS a PaaS fino a SaaS." },
+            { "id": "B", "testo": "In SaaS il cliente è responsabile della sicurezza fisica dei data center e del raffreddamento dei server", "corretta": false, "spiegazione": "La sicurezza fisica dell'infrastruttura cloud spetta sempre al provider in tutti i modelli." },
+            { "id": "C", "testo": "In IaaS il provider è responsabile della configurazione dei permessi applicativi interni del cliente", "corretta": false, "spiegazione": "La gestione dei dati, delle identità e delle configurazioni applicative resta sempre in capo al cliente." }
+          ]
+        },
+        {
+          "id": "D3_Q10", "difficolta": 10, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è l'obiettivo primario dell'introduzione di un Load Balancer in configurazione ridondata in un'architettura critica?",
+          "risposte": [
+            { "id": "A", "testo": "Distribuire il traffico su più nodi sani ed escludere automaticamente quelli guasti per garantire alta disponibilità ed eliminare Single Point of Failure", "corretta": true, "spiegazione": "Gli health check e la ridondanza assicurano continuità operativa anche in caso di guasto hardware." },
+            { "id": "B", "testo": "Impedire qualsiasi connessione HTTPS proveniente da dispositivi mobili", "corretta": false, "spiegazione": "Il bilanciatore gestisce la distribuzione dei flussi indipendentemente dal tipo di dispositivo client." },
+            { "id": "C", "testo": "Convertire automaticamente i database SQL in file di testo statici", "corretta": false, "spiegazione": "Il bilanciamento del carico opera sull'instradamento del traffico, non sulla struttura dei dati." }
+          ]
+        },
+        {
+          "id": "D3_Q11", "difficolta": 11, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale capacità distingue un Web Application Firewall (WAF) rispetto a un tradizionale firewall di rete?",
+          "risposte": [
+            { "id": "A", "testo": "Analizza la semantica delle richieste HTTP/HTTPS a livello 7 per bloccare attacchi applicativi come injection e manipolazione sessioni", "corretta": true, "spiegazione": "L'ispezione del payload applicativo permette di riconoscere pattern malevoli invisibili ai livelli 3 e 4." },
+            { "id": "B", "testo": "Gestisce esclusivamente il routing dinamico BGP tra diversi Autonomous System", "corretta": false, "spiegazione": "Il routing inter-dominio è una funzione dei router core, non di un WAF." },
+            { "id": "C", "testo": "Sostituisce completamente la necessità di eseguire code review e sanitizzazione degli input nel codice", "corretta": false, "spiegazione": "Il WAF fornisce difesa perimetrale ma non elimina le vulnerabilità strutturali del codice." }
+          ]
+        },
+        {
+          "id": "D3_Q12", "difficolta": 12, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è la funzione architetturale di un Jump Server (Bastion Host) in una rete segmentata?",
+          "risposte": [
+            { "id": "A", "testo": "Fornire un unico punto d'accesso rinforzato, autenticato e sottoposto ad audit per amministrare sistemi collocati in zone ad alta sicurezza", "corretta": true, "spiegazione": "La centralizzazione degli accessi amministrativi riduce le porte esposte e facilita la registrazione delle sessioni." },
+            { "id": "B", "testo": "Ospitare i database pubblici del sito e-commerce direttamente su Internet senza firewall", "corretta": false, "spiegazione": "I database non devono mai essere esposti direttamente e non risiedono su un bastion host." },
+            { "id": "C", "testo": "Inoltrare traffico broadcast tra tutte le VLAN per semplificare la scoperta dei dispositivi", "corretta": false, "spiegazione": "Il jump server gestisce sessioni amministrative controllate, non l'inoltro di traffico broadcast." }
+          ]
+        },
+        {
+          "id": "D3_Q13", "difficolta": 13, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale problema principale risolve la microsegmentazione rispetto alla segmentazione perimetrale tradizionale?",
+          "risposte": [
+            { "id": "A", "testo": "Applica policy granulari tra singoli carichi di lavoro (traffico est-ovest), impedendo i movimenti laterali all'interno dello stesso segmento di rete", "corretta": true, "spiegazione": "Il controllo granulare per workload riduce il movimento laterale anche dopo il superamento del perimetro." },
+            { "id": "B", "testo": "Elimina la necessità di cifrare le comunicazioni verso reti geografiche pubbliche", "corretta": false, "spiegazione": "La protezione del traffico interno non sostituisce la cifratura delle comunicazioni esterne." },
+            { "id": "C", "testo": "Riduce il numero di interfacce di rete fisiche necessarie sui router di confine", "corretta": false, "spiegazione": "La microsegmentazione è implementata via software o hypervisor, non tramite riduzione hardware." }
+          ]
+        },
+        {
+          "id": "D3_Q14", "difficolta": 14, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Cosa caratterizza un'architettura Air-Gapped impiegata per sistemi critici industriali o governativi?",
+          "risposte": [
+            { "id": "A", "testo": "L'isolamento fisico completo delle interfacce di rete da qualsiasi connessione cablata o wireless verso reti esterne non attendibili", "corretta": true, "spiegazione": "L'assenza di percorsi di rete diretti impone il trasferimento controllato tramite supporti fisici verificati." },
+            { "id": "B", "testo": "L'uso esclusivo di reti Wi-Fi pubbliche con password condivisa tra tutti gli operatori", "corretta": false, "spiegazione": "Qualsiasi collegamento wireless verso l'esterno viola il principio stesso di isolamento fisico." },
+            { "id": "C", "testo": "La replicazione sincrona in tempo reale dei dati verso tre cloud provider pubblici", "corretta": false, "spiegazione": "La sincronizzazione continua verso il cloud richiede connettività esterna attiva." }
+          ]
+        },
+        {
+          "id": "D3_Q15", "difficolta": 15, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale funzione svolge un CASB (Cloud Access Security Broker) tra gli utenti aziendali e i servizi cloud?",
+          "risposte": [
+            { "id": "A", "testo": "Fornisce visibilità sullo Shadow IT, applica policy di Data Loss Prevention (DLP) e controlla gli accessi verso applicazioni cloud", "corretta": true, "spiegazione": "Il broker estende i controlli di sicurezza aziendali sui servizi cloud gestiti da terze parti." },
+            { "id": "B", "testo": "Gestisce esclusivamente il raffreddamento a liquido dei server on-premise", "corretta": false, "spiegazione": "Il CASB è un punto di controllo logico per i servizi cloud, non un sistema impiantistico." },
+            { "id": "C", "testo": "Genera automaticamente schemi elettrici per i quadri di distribuzione del data center", "corretta": false, "spiegazione": "Le funzionalità del CASB riguardano governance, conformità e protezione dati nel cloud." }
+          ]
+        },
+        {
+          "id": "D3_Q16", "difficolta": 16, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quale trasformazione architetturale definisce il modello SASE (Secure Access Service Edge)?",
+          "risposte": [
+            { "id": "A", "testo": "La convergenza in un'unica piattaforma cloud-native distribuita delle funzionalità di rete (SD-WAN) e dei servizi di sicurezza (ZTNA, SWG, CASB, FWaaS)", "corretta": true, "spiegazione": "L'erogazione distribuita sull'edge elimina il backhauling verso il data center centrale." },
+            { "id": "B", "testo": "Il ritorno centralizzato di tutto il traffico remoto su linee dedicate MPLS verso un unico firewall hardware on-premise", "corretta": false, "spiegazione": "Il backhauling su MPLS verso un perimetro fisso è proprio il modello superato da SASE." },
+            { "id": "C", "testo": "La sostituzione dei protocolli TCP/IP con collegamenti seriali punto-punto", "corretta": false, "spiegazione": "SASE opera interamente su reti IP moderne combinando SD-WAN e sicurezza cloud." }
+          ]
+        },
+        {
+          "id": "D3_Q17", "difficolta": 17, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "In un'architettura a microservizi, come garantisce un Service Mesh l'autenticazione e la cifratura del traffico est-ovest tra servizi?",
+          "risposte": [
+            { "id": "A", "testo": "Delega a proxy sidecar gestiti dal control plane la negoziazione automatica di mTLS e la rotazione di identità crittografiche effimere", "corretta": true, "spiegazione": "Il disaccoppiamento tramite sidecar applica sicurezza uniforme senza modificare il codice dei microservizi." },
+            { "id": "B", "testo": "Disabilita la verifica dei certificati tra container fidati all'interno dello stesso cluster", "corretta": false, "spiegazione": "L'autenticazione reciproca verifica crittograficamente entrambi gli estremi della comunicazione." },
+            { "id": "C", "testo": "Invia le chiavi private dei servizi in chiaro negli header HTTP di ogni richiesta interna", "corretta": false, "spiegazione": "Le chiavi private non vengono mai trasmesse in rete né inserite negli header applicativi." }
+          ]
+        },
+        {
+          "id": "D3_Q18", "difficolta": 18, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quale stato dei dati viene protetto specificamente dal Confidential Computing tramite Trusted Execution Environments (TEE) basati su hardware?",
+          "risposte": [
+            { "id": "A", "testo": "I dati in uso (Data in Use), isolando codice e memoria in enclavi cifrate a livello CPU inaccessibili persino all'hypervisor o all'amministratore host", "corretta": true, "spiegazione": "La cifratura della memoria a livello hardware protegge l'elaborazione anche su infrastrutture condivise." },
+            { "id": "B", "testo": "Esclusivamente i dati archiviati su nastri di backup offline conservati in cassaforte", "corretta": false, "spiegazione": "I backup offline rientrano nei dati a riposo, non nella protezione durante l'elaborazione." },
+            { "id": "C", "testo": "Unicamente i pacchetti ICMP in transito sui cavi sottomarini intercontinentali", "corretta": false, "spiegazione": "I dati in movimento su reti geografiche sono protetti dai protocolli di trasporto cifrati." }
+          ]
+        },
+        {
+          "id": "D3_Q19", "difficolta": 19, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Nel modello di riferimento Purdue (ISA/IEC 62443) per le architetture OT/ICS, qual è il ruolo architetturale del Livello 3.5 (Industrial DMZ)?",
+          "risposte": [
+            { "id": "A", "testo": "Disaccoppiare completamente le reti aziendali IT (Livelli 4-5) dalle reti di controllo industriale (Livelli 0-3), impedendo flussi diretti tra i due domini", "corretta": true, "spiegazione": "La zona cuscinetto media lo scambio dati attraverso server proxy senza connessioni dirette IT-OT." },
+            { "id": "B", "testo": "Collegare direttamente i PLC di campo a Internet per consentire aggiornamenti firmware automatici dai fornitori", "corretta": false, "spiegazione": "I dispositivi di campo di Livello 1 non devono mai comunicare direttamente con reti esterne." },
+            { "id": "C", "testo": "Ospitare le postazioni di posta elettronica e navigazione web del personale amministrativo", "corretta": false, "spiegazione": "I servizi d'ufficio appartengono ai livelli aziendali superiori, separati dalla DMZ industriale." }
+          ]
+        },
+        {
+          "id": "D3_Q20", "difficolta": 20, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "In che modo l'architettura Immutable Infrastructure abbinata alla Remote Attestation rafforza la postura di sicurezza di un cluster distribuito?",
+          "risposte": [
+            { "id": "A", "testo": "I nodi non vengono mai modificati in loco ma sostituiti da immagini firmate verificate crittograficamente al boot tramite misurazioni hardware", "corretta": true, "spiegazione": "L'immutabilità elimina la deriva di configurazione e l'attestazione garantisce l'integrità dello stack avviato." },
+            { "id": "B", "testo": "Consente agli amministratori di collegarsi via SSH su ogni nodo di produzione per modificare manualmente i binari di sistema", "corretta": false, "spiegazione": "La modifica manuale in produzione definisce la gestione mutabile tradizionale, soggetta a configuration drift." },
+            { "id": "C", "testo": "Disabilita la verifica delle firme digitali del bootloader per velocizzare il riavvio dei container", "corretta": false, "spiegazione": "La catena di fiducia del boot richiede la verifica rigorosa delle firme fino all'ancora hardware." }
+          ]
+        }
+      ]
+    },
+    {
+      "id_dominio": "4.0",
+      "nome_dominio": "Security Operations",
+      "quesiti": [
+        {
+          "id": "D4_Q01", "difficolta": 1, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la funzione principale di un sistema SIEM (Security Information and Event Management) in un centro operativo di sicurezza?",
+          "risposte": [
+            { "id": "A", "testo": "Raccogliere, normalizzare e correlare in tempo reale i log provenienti da diverse sorgenti per individuare eventi sospetti", "corretta": true, "spiegazione": "La correlazione centralizzata permette di collegare eventi isolati per rilevare attività anomale." },
+            { "id": "B", "testo": "Sostituire i cavi di rete difettosi all'interno degli armadi rack del data center", "corretta": false, "spiegazione": "Il SIEM è una piattaforma software di analisi dati e non esegue interventi fisici." },
+            { "id": "C", "testo": "Fornire connessioni Wi-Fi pubbliche gratuite ai visitatori esterni dell'azienda", "corretta": false, "spiegazione": "L'erogazione di connettività wireless spetta agli access point e non ai sistemi di monitoraggio." }
+          ]
+        },
+        {
+          "id": "D4_Q02", "difficolta": 2, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la prima azione immediata da compiere quando si rileva un malware attivo su una singola postazione di lavoro aziendale?",
+          "risposte": [
+            { "id": "A", "testo": "Isolare l'host dalla rete (contenimento) per impedire la propagazione verso altri sistemi", "corretta": true, "spiegazione": "Il contenimento immediato blocca i movimenti laterali e le comunicazioni verso l'esterno." },
+            { "id": "B", "testo": "Formattare immediatamente il disco rigido senza raccogliere alcuna informazione sull'accaduto", "corretta": false, "spiegazione": "La formattazione prematura distrugge le prove utili a comprendere l'origine dell'infezione." },
+            { "id": "C", "testo": "Inoltrare l'eseguibile sospetto via email a tutti i colleghi per chiedere un parere", "corretta": false, "spiegazione": "La diffusione di file malevoli espone l'intera organizzazione al rischio di contagio." }
+          ]
+        },
+        {
+          "id": "D4_Q03", "difficolta": 3, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Perché le copie di backup critiche devono essere conservate anche offline o in modalità immutabile?",
+          "risposte": [
+            { "id": "A", "testo": "Per impedire che un ransomware o un attaccante con privilegi elevati possa cifrare o eliminare anche i backup durante un attacco", "corretta": true, "spiegazione": "L'isolamento e l'immutabilità garantiscono una copia integra per il ripristino post-incidente." },
+            { "id": "B", "testo": "Per aumentare la frequenza di clock della memoria RAM dei server di produzione", "corretta": false, "spiegazione": "I supporti di archiviazione non influenzano le prestazioni hardware dei server attivi." },
+            { "id": "C", "testo": "Per evitare di dover aggiornare il sistema operativo dei computer degli utenti", "corretta": false, "spiegazione": "Il backup è una misura di ripristino e non sostituisce la gestione delle vulnerabilità." }
+          ]
+        },
+        {
+          "id": "D4_Q04", "difficolta": 4, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale vantaggio offre una soluzione EDR (Endpoint Detection and Response) rispetto a un antivirus tradizionale basato solo su firme?",
+          "risposte": [
+            { "id": "A", "testo": "Monitora continuamente il comportamento dei processi e consente indagini e risposte remote sull'endpoint", "corretta": true, "spiegazione": "L'analisi comportamentale rileva minacce prive di firme note e abilita il contenimento remoto." },
+            { "id": "B", "testo": "Blocca esclusivamente le email di spam prima che raggiungano il server di posta", "corretta": false, "spiegazione": "Il filtraggio della posta è svolto dai gateway email, mentre l'EDR opera sugli host." },
+            { "id": "C", "testo": "Sostituisce completamente il router perimetrale nella gestione dell'indirizzamento IP", "corretta": false, "spiegazione": "L'agente EDR protegge il singolo dispositivo senza svolgere funzioni di instradamento di rete." }
+          ]
+        },
+        {
+          "id": "D4_Q05", "difficolta": 5, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la differenza principale tra un Vulnerability Scan e un Penetration Test?",
+          "risposte": [
+            { "id": "A", "testo": "Il Vulnerability Scan identifica automaticamente potenziali falle note; il Penetration Test tenta attivamente di sfruttarle per valutarne l'impatto reale", "corretta": true, "spiegazione": "La scansione produce un inventario di debolezze, mentre il pentest verifica la sfruttabilità effettiva." },
+            { "id": "B", "testo": "Il Vulnerability Scan richiede sempre l'accesso fisico ai cavi del server, mentre il Penetration Test è solo teorico", "corretta": false, "spiegazione": "Entrambe le attività si svolgono tipicamente via rete e il pentest prevede azioni pratiche." },
+            { "id": "C", "testo": "Il Penetration Test viene eseguito esclusivamente da software automatici senza supervisione umana", "corretta": false, "spiegazione": "Il penetration testing richiede competenze umane per concatenare vulnerabilità e simulare avversari." }
+          ]
+        },
+        {
+          "id": "D4_Q06", "difficolta": 6, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è la sequenza corretta delle fasi del ciclo di Incident Response secondo il framework NIST SP 800-61?",
+          "risposte": [
+            { "id": "A", "testo": "Preparation -> Detection and Analysis -> Containment, Eradication and Recovery -> Post-Incident Activity", "corretta": true, "spiegazione": "Il processo parte dalla preparazione preventiva fino all'analisi delle lezioni apprese post-ripristino." },
+            { "id": "B", "testo": "Eradication -> Preparation -> Post-Incident Activity -> Detection", "corretta": false, "spiegazione": "Non è possibile eradicare una minaccia prima di averla rilevata e analizzata." },
+            { "id": "C", "testo": "Recovery -> Containment -> Preparation -> Analysis", "corretta": false, "spiegazione": "Il ripristino avviene solo dopo aver contenuto ed eliminato la causa dell'incidente." }
+          ]
+        },
+        {
+          "id": "D4_Q07", "difficolta": 7, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Perché la sincronizzazione precisa dell'orologio tramite NTP (Network Time Protocol) è critica per le operazioni di sicurezza?",
+          "risposte": [
+            { "id": "A", "testo": "Permette di correlare accuratamente i timestamp dei log provenienti da sistemi diversi durante un'indagine forense", "corretta": true, "spiegazione": "Senza riferimento temporale comune è impossibile ricostruire l'esatta sequenza di un attacco." },
+            { "id": "B", "testo": "Cifra automaticamente tutti i file di testo salvati sulle cartelle condivise di rete", "corretta": false, "spiegazione": "NTP sincronizza i riferimenti orari di sistema e non applica cifratura ai file." },
+            { "id": "C", "testo": "Impedisce ai dispositivi non autorizzati di ottenere un indirizzo IP dal server DHCP", "corretta": false, "spiegazione": "Il controllo degli accessi alla rete non dipende dalla sincronizzazione dell'orologio." }
+          ]
+        },
+        {
+          "id": "D4_Q08", "difficolta": 8, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Quale ruolo svolge una piattaforma SOAR (Security Orchestration, Automation, and Response) all'interno di un SOC?",
+          "risposte": [
+            { "id": "A", "testo": "Integra diversi strumenti di sicurezza ed esegue playbook automatizzati per arricchire gli alert e accelerare il contenimento", "corretta": true, "spiegazione": "L'orchestrazione riduce il carico manuale sugli analisti standardizzando le risposte ripetitive." },
+            { "id": "B", "testo": "Sostituisce la rete elettrica del data center durante le operazioni di manutenzione", "corretta": false, "spiegazione": "SOAR è un livello software di coordinamento operativo, non un sistema energetico." },
+            { "id": "C", "testo": "Disabilita tutti gli alert di sicurezza durante i fine settimana per evitare notifiche", "corretta": false, "spiegazione": "La piattaforma automatizza la gestione degli alert senza sopprimere il monitoraggio continuo." }
+          ]
+        },
+        {
+          "id": "D4_Q09", "difficolta": 9, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è lo scopo legale e tecnico della Chain of Custody (Catena di Custodia) nella digital forensics?",
+          "risposte": [
+            { "id": "A", "testo": "Documentare cronologicamente chi ha raccolto, trasferito, analizzato e custodito una prova digitale per garantirne l'integrità e l'ammissibilità", "corretta": true, "spiegazione": "La tracciabilità ininterrotta dimostra che il reperto non ha subito alterazioni dopo il sequestro." },
+            { "id": "B", "testo": "Elencare le password di amministratore di tutti i dipendenti dell'azienda in un foglio pubblico", "corretta": false, "spiegazione": "La catena di custodia riguarda la tracciabilità delle prove forensi, non la condivisione di credenziali." },
+            { "id": "C", "testo": "Ottimizzare la velocità di indicizzazione delle query su un database relazionale", "corretta": false, "spiegazione": "È una procedura probatoria e legale estranea alle prestazioni dei database." }
+          ]
+        },
+        {
+          "id": "D4_Q10", "difficolta": 10, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Secondo l'Order of Volatility (RFC 3227), quali evidenze devono essere acquisite per prime durante la risposta a un incidente su un sistema acceso?",
+          "risposte": [
+            { "id": "A", "testo": "Contenuto dei registri CPU, memoria RAM e tabelle di rete attive, prima dei dati su disco fisso e supporti di backup", "corretta": true, "spiegazione": "I dati volatili in memoria svaniscono allo spegnimento o vengono sovrascritti rapidamente." },
+            { "id": "B", "testo": "I nastri magnetici di backup conservati nell'archivio storico offline", "corretta": false, "spiegazione": "I supporti offline sono stabili e non subiscono modifiche immediate durante l'indagine." },
+            { "id": "C", "testo": "I manuali cartacei delle procedure operative conservati negli uffici amministrativi", "corretta": false, "spiegazione": "La documentazione cartacea non è soggetta a volatilità elettronica." }
+          ]
+        },
+        {
+          "id": "D4_Q11", "difficolta": 11, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Cosa distingue l'attività di Threat Hunting rispetto al tradizionale monitoraggio basato su alert del SIEM?",
+          "risposte": [
+            { "id": "A", "testo": "È un processo proattivo guidato da ipotesi per scovare minacce persistenti che hanno eluso i controlli automatici", "corretta": true, "spiegazione": "Il threat hunting ricerca attivamente anomalie nascoste prima che scattino regole predefinite." },
+            { "id": "B", "testo": "Consiste esclusivamente nell'attendere segnalazioni telefoniche dagli utenti quando il PC si blocca", "corretta": false, "spiegazione": "La gestione delle segnalazioni utente rientra nel supporto reattivo di primo livello." },
+            { "id": "C", "testo": "Prevede la disinstallazione di tutti i sensori di telemetria per ridurre il traffico di rete", "corretta": false, "spiegazione": "La caccia alle minacce richiede ampia visibilità telemetrica su endpoint e rete." }
+          ]
+        },
+        {
+          "id": "D4_Q12", "difficolta": 12, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Perché nell'acquisizione forense di un disco si calcola l'hash crittografico dell'immagine bit-stream immediatamente dopo la copia?",
+          "risposte": [
+            { "id": "A", "testo": "Per dimostrare matematicamente che la copia di lavoro è identica bit per bit al supporto originale e non è stata alterata", "corretta": true, "spiegazione": "La corrispondenza dei digest crittografici attesta l'integrità dell'acquisizione forense." },
+            { "id": "B", "testo": "Per comprimere l'immagine forense riducendone la dimensione del novanta percento", "corretta": false, "spiegazione": "Una funzione di hash genera un'impronta fissa e non comprime i dati sorgente." },
+            { "id": "C", "testo": "Per eliminare automaticamente tutti i file temporanei presenti sul disco originale", "corretta": false, "spiegazione": "L'acquisizione forense utilizza write-blocker per preservare intatto il supporto originale." }
+          ]
+        },
+        {
+          "id": "D4_Q13", "difficolta": 13, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Quale valore investigativo offre l'analisi del file di ibernazione o dello spazio di swap durante un'indagine su un sistema spento?",
+          "risposte": [
+            { "id": "A", "testo": "Consente di recuperare frammenti della memoria RAM salvati su disco, incluse chiavi di cifratura, processi e connessioni precedenti", "corretta": true, "spiegazione": "Lo swap e l'ibernazione conservano su memoria non volatile artefatti tipici della RAM." },
+            { "id": "B", "testo": "Permette di riparare i settori danneggiati fisicamente sui piatti del disco rigido", "corretta": false, "spiegazione": "L'analisi forense esamina i contenuti logici senza effettuare manutenzione hardware." },
+            { "id": "C", "testo": "Fornisce l'elenco completo delle regole configurate sui firewall perimetrali esterni", "corretta": false, "spiegazione": "I file di paging locali contengono lo stato del singolo host e non le policy degli apparati di rete." }
+          ]
+        },
+        {
+          "id": "D4_Q14", "difficolta": 14, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Come funziona la tecnica del DNS Sinkholing nella risposta operativa a un'infezione malware?",
+          "risposte": [
+            { "id": "A", "testo": "Reindirizza le risoluzioni DNS dei domini malevoli verso un server interno controllato, interrompendo il C2 e identificando gli host infetti", "corretta": true, "spiegazione": "La risoluzione controllata neutralizza la comunicazione esterna e rivela i client compromessi." },
+            { "id": "B", "testo": "Spegne definitivamente tutti i server DNS autoritativi dell'intera rete aziendale", "corretta": false, "spiegazione": "Il sinkholing agisce selettivamente sui domini malevoli senza interrompere la risoluzione legittima." },
+            { "id": "C", "testo": "Invia pacchetti malformati verso l'infrastruttura dell'attaccante per distruggerne i server", "corretta": false, "spiegazione": "È una misura difensiva interna che non comporta azioni offensive verso l'esterno." }
+          ]
+        },
+        {
+          "id": "D4_Q15", "difficolta": 15, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è l'impatto operativo di un tasso elevato di False Positive rispetto a un False Negative nei sistemi di rilevamento?",
+          "risposte": [
+            { "id": "A", "testo": "I False Positive generano alert su attività legittime causando alert fatigue; i False Negative lasciano passare attacchi reali senza generare avvisi", "corretta": true, "spiegazione": "Il bilanciamento delle regole evita sia la saturazione degli analisti sia i punti ciechi difensivi." },
+            { "id": "B", "testo": "I False Positive indicano sempre un attacco riuscito, mentre i False Negative sono manutenzioni programmate", "corretta": false, "spiegazione": "Un falso positivo segnala erroneamente una minaccia assente, mentre il falso negativo la omette." },
+            { "id": "C", "testo": "Entrambi migliorano automaticamente l'accuratezza dei modelli di machine learning senza revisione", "corretta": false, "spiegazione": "Entrambi richiedono attività di tuning e feedback umano per affinare la logica di rilevamento." }
+          ]
+        },
+        {
+          "id": "D4_Q16", "difficolta": 16, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Secondo il modello della Pyramid of Pain, perché rilevare e bloccare TTP (Tactics, Techniques, and Procedures) è più efficace rispetto al blocco di hash o indirizzi IP?",
+          "risposte": [
+            { "id": "A", "testo": "Hash e IP sono modificabili dall'avversario a costo quasi nullo, mentre alterare i comportamenti operativi richiede di riprogettare strumenti e metodologie", "corretta": true, "spiegazione": "Colpire i comportamenti costringe l'attaccante a modificare la propria logica operativa e non semplici indicatori atomici." },
+            { "id": "B", "testo": "Perché gli indirizzi IPv4 non possono mai essere modificati né riassegnati su Internet", "corretta": false, "spiegazione": "Gli indirizzi IP e i nomi a dominio sono facilmente ruotabili tramite infrastrutture cloud." },
+            { "id": "C", "testo": "Perché il blocco dei comportamenti elimina la necessità di raccogliere qualsiasi log dagli endpoint", "corretta": false, "spiegazione": "Il rilevamento delle TTP richiede telemetria approfondita sui processi e sulle chiamate di sistema." }
+          ]
+        },
+        {
+          "id": "D4_Q17", "difficolta": 17, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quale vantaggio architetturale offre la raccolta di telemetria NetFlow/IPFIX rispetto alla Full Packet Capture (PCAP) su dorsali ad altissima capacità?",
+          "risposte": [
+            { "id": "A", "testo": "Fornisce metadati compatti sulle conversazioni di rete per rilevare anomalie volumetriche ed esfiltrazione con un impatto minimo su storage e banda", "corretta": true, "spiegazione": "L'aggregazione dei metadati di flusso consente visibilità su larga scala dove il salvataggio completo sarebbe insostenibile." },
+            { "id": "B", "testo": "Decifra automaticamente tutto il traffico TLS 1.3 senza bisogno di certificati o chiavi di sessione", "corretta": false, "spiegazione": "NetFlow registra solo gli header di flusso e non ispeziona né decifra il payload applicativo." },
+            { "id": "C", "testo": "Sostituisce completamente il firewall bloccando fisicamente i pacchetti anomali a livello ottico", "corretta": false, "spiegazione": "La telemetria di flusso è uno strumento passivo di osservabilità, non un meccanismo inline di blocco." }
+          ]
+        },
+        {
+          "id": "D4_Q18", "difficolta": 18, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Come si individuano efficacemente gli abusi di binari nativi del sistema operativo (Living-off-the-Land) in un ambiente enterprise?",
+          "risposte": [
+            { "id": "A", "testo": "Analizzando le relazioni padre-figlio nella creazione dei processi, gli argomenti della riga di comando e le connessioni di rete originate da utility di sistema", "corretta": true, "spiegazione": "Il contesto di esecuzione distingue l'uso amministrativo legittimo dall'invocazione anomala da parte di applicazioni utente." },
+            { "id": "B", "testo": "Eliminando tutti gli interpreti di comandi e le utility di amministrazione dal sistema operativo", "corretta": false, "spiegazione": "La rimozione dei componenti nativi comprometterebbe il funzionamento e la gestione del sistema operativo." },
+            { "id": "C", "testo": "Verificando esclusivamente la presenza di una firma digitale valida sull'eseguibile avviato", "corretta": false, "spiegazione": "I binari nativi sono firmati legittimamente dal produttore del sistema operativo." }
+          ]
+        },
+        {
+          "id": "D4_Q19", "difficolta": 19, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è la criticità principale dell'analisi forense in ambienti orchestrati a container effimeri e come viene mitigata operativamente?",
+          "risposte": [
+            { "id": "A", "testo": "La terminazione del container distrugge il filesystem temporaneo; si mitiga con streaming continuo dei log, telemetria runtime del kernel e snapshot dei layer", "corretta": true, "spiegazione": "La natura transitoria dei workload impone la raccolta esterna immediata degli artefatti prima della distruzione." },
+            { "id": "B", "testo": "I container non eseguono processi sul kernel dell'host e quindi non generano alcuna traccia osservabile", "corretta": false, "spiegazione": "I container condividono il kernel del nodo ospite rendendo visibili le chiamate di sistema." },
+            { "id": "C", "testo": "Tutti i container salvano automaticamente l'intera memoria RAM su disco pubblico al momento dello spegnimento", "corretta": false, "spiegazione": "I runtime standard non eseguono dump automatici della memoria alla terminazione di un pod." }
+          ]
+        },
+        {
+          "id": "D4_Q20", "difficolta": 20, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è l'obiettivo metodologico di un'esercitazione Purple Team rispetto a un Red Team tradizionale?",
+          "risposte": [
+            { "id": "A", "testo": "Creare un ciclo collaborativo continuo tra attacco e difesa per mappare ogni azione simulata alla relativa telemetria e colmare le lacune di rilevamento", "corretta": true, "spiegazione": "La trasparenza reciproca accelera il tuning delle regole e misura l'efficacia reale dei controlli." },
+            { "id": "B", "testo": "Condurre attacchi informatici non autorizzati contro infrastrutture di aziende concorrenti", "corretta": false, "spiegazione": "Le attività si svolgono esclusivamente su ambienti autorizzati dell'organizzazione." },
+            { "id": "C", "testo": "Isolare completamente i team offensivi e difensivi impedendo qualsiasi scambio di informazioni al termine dei test", "corretta": false, "spiegazione": "La collaborazione diretta è l'elemento distintivo che differenzia il Purple Teaming dai test blind." }
+          ]
+        }
+      ]
+    },
+    {
+      "id_dominio": "5.0",
+      "nome_dominio": "Security Program Management and Oversight",
+      "quesiti": [
+        {
+          "id": "D5_Q01", "difficolta": 1, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la differenza fondamentale tra una Security Policy e una Procedura operativa?",
+          "risposte": [
+            { "id": "A", "testo": "La policy stabilisce gli obiettivi e le regole direttive dell'organizzazione; la procedura descrive i passaggi pratici per attuarle", "corretta": true, "spiegazione": "Le policy definiscono l'intento strategico obbligatorio, mentre le procedure guidano l'esecuzione operativa." },
+            { "id": "B", "testo": "La policy è un documento facoltativo per gli stagisti, mentre la procedura ha valore di legge penale", "corretta": false, "spiegazione": "Le policy aziendali sono vincolanti per tutto il personale interno ma non sono leggi statali." },
+            { "id": "C", "testo": "La procedura viene scritta esclusivamente dal consiglio di amministrazione senza dettagli tecnici", "corretta": false, "spiegazione": "I dettagli operativi passo-passo sono redatti dai team tecnici di riferimento." }
+          ]
+        },
+        {
+          "id": "D5_Q02", "difficolta": 2, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è l'obiettivo primario di un programma aziendale di Security Awareness?",
+          "risposte": [
+            { "id": "A", "testo": "Formare i dipendenti affinché riconoscano minacce come il phishing e adottino comportamenti sicuri nella gestione dei dati", "corretta": true, "spiegazione": "La consapevolezza del personale riduce la vulnerabilità al fattore umano e all'ingegneria sociale." },
+            { "id": "B", "testo": "Insegnare a tutti i dipendenti del reparto amministrativo a programmare exploit del kernel", "corretta": false, "spiegazione": "La formazione di base mira alla prevenzione quotidiana, non allo sviluppo offensivo specialistico." },
+            { "id": "C", "testo": "Eliminare completamente la necessità di installare firewall e sistemi di backup", "corretta": false, "spiegazione": "I controlli amministrativi affiancano ma non sostituiscono le difese tecniche." }
+          ]
+        },
+        {
+          "id": "D5_Q03", "difficolta": 3, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Quale funzione svolge un NDA (Non-Disclosure Agreement) prima di avviare una collaborazione con un consulente esterno?",
+          "risposte": [
+            { "id": "A", "testo": "Vincola legalmente le parti a non divulgare informazioni riservate o proprietarie condivise durante il rapporto", "corretta": true, "spiegazione": "L'accordo di riservatezza tutela contrattualmente la confidenzialità dei dati sensibili." },
+            { "id": "B", "testo": "Garantisce automaticamente che i server dell'azienda siano immuni da attacchi DDoS", "corretta": false, "spiegazione": "Un contratto legale non fornisce protezione tecnica contro le interruzioni di rete." },
+            { "id": "C", "testo": "Autorizza il consulente a vendere i dati dei clienti a società pubblicitarie terze", "corretta": false, "spiegazione": "L'accordo vieta espressamente la diffusione o l'uso non autorizzato delle informazioni." }
+          ]
+        },
+        {
+          "id": "D5_Q04", "difficolta": 4, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Qual è la differenza tra un Business Continuity Plan (BCP) e un Disaster Recovery Plan (DRP)?",
+          "risposte": [
+            { "id": "A", "testo": "Il BCP assicura la continuità dei processi aziendali critici durante un'emergenza; il DRP si concentra sul ripristino dell'infrastruttura IT", "corretta": true, "spiegazione": "Il DRP è una componente tecnica orientata al recupero dei sistemi all'interno della strategia globale BCP." },
+            { "id": "B", "testo": "Il BCP riguarda esclusivamente la pulizia degli uffici, mentre il DRP gestisce le assunzioni del personale", "corretta": false, "spiegazione": "Entrambi i piani governano la resilienza operativa e tecnologica dell'organizzazione." },
+            { "id": "C", "testo": "Il DRP si applica solo agli errori di battitura nei documenti di testo", "corretta": false, "spiegazione": "Il disaster recovery interviene a fronte di eventi gravi che interrompono i servizi tecnologici." }
+          ]
+        },
+        {
+          "id": "D5_Q05", "difficolta": 5, "livello": "Principiante (Istituto Tecnico)",
+          "domanda": "Cosa definisce un SLA (Service Level Agreement) stipulato con un fornitore di servizi cloud?",
+          "risposte": [
+            { "id": "A", "testo": "I parametri misurabili di qualità del servizio, come disponibilità garantita, tempi di risposta e relative penali", "corretta": true, "spiegazione": "L'accordo stabilisce impegni oggettivi di erogazione e supporto tra fornitore e cliente." },
+            { "id": "B", "testo": "L'algoritmo crittografico interno utilizzato dal processore del client per avviare il browser", "corretta": false, "spiegazione": "Lo SLA è un documento contrattuale di livello di servizio, non una specifica hardware locale." },
+            { "id": "C", "testo": "La planimetria architettonica delle uscite di sicurezza dell'edificio del cliente", "corretta": false, "spiegazione": "Gli accordi di servizio regolano le prestazioni contrattuali e non la logistica edilizia." }
+          ]
+        },
+        {
+          "id": "D5_Q06", "difficolta": 6, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è la differenza tra RTO (Recovery Time Objective) e RPO (Recovery Point Objective)?",
+          "risposte": [
+            { "id": "A", "testo": "RTO è il tempo massimo tollerabile per ripristinare un servizio; RPO è l'intervallo massimo di perdita di dati tollerabile", "corretta": true, "spiegazione": "RTO guida i tempi di ripartenza dell'infrastruttura, mentre RPO determina la frequenza dei backup." },
+            { "id": "B", "testo": "RTO indica il costo annuale delle licenze antivirus; RPO indica il numero di dipendenti del team IT", "corretta": false, "spiegazione": "Entrambi sono parametri temporali fondamentali nella pianificazione della continuità operativa." },
+            { "id": "C", "testo": "RPO deve essere sempre superiore a un anno per ridurre il carico sui dischi di produzione", "corretta": false, "spiegazione": "Un RPO annuale comporterebbe la perdita di un intero anno di transazioni in caso di guasto." }
+          ]
+        },
+        {
+          "id": "D5_Q07", "difficolta": 7, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Qual è l'obiettivo principale di una Business Impact Analysis (BIA)?",
+          "risposte": [
+            { "id": "A", "testo": "Identificare le funzioni aziendali critiche, le loro dipendenze e quantificare l'impatto operativo ed economico di una loro interruzione", "corretta": true, "spiegazione": "La BIA stabilisce le priorità di ripristino e i requisiti RTO/RPO in base alla criticità dei processi." },
+            { "id": "B", "testo": "Sostituire tutti i server fisici con terminali privi di connessione di rete", "corretta": false, "spiegazione": "La BIA è un'analisi strategica dei processi aziendali e non un progetto di dismissione hardware." },
+            { "id": "C", "testo": "Verificare la velocità di stampa delle stampanti multifunzione in ogni reparto", "corretta": false, "spiegazione": "L'analisi si concentra sui processi vitali per la sopravvivenza e operatività dell'organizzazione." }
+          ]
+        },
+        {
+          "id": "D5_Q08", "difficolta": 8, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Quale strategia di gestione del rischio adotta un'azienda quando stipula una polizza di assicurazione informatica?",
+          "risposte": [
+            { "id": "A", "testo": "Risk Transference / Sharing (Trasferimento o condivisione del rischio)", "corretta": true, "spiegazione": "L'impatto finanziario potenziale viene condiviso contrattualmente con una terza parte." },
+            { "id": "B", "testo": "Risk Avoidance (Evitamento del rischio)", "corretta": false, "spiegazione": "L'evitamento consiste nel cessare l'attività che genera il rischio, non nell'assicurarla." },
+            { "id": "C", "testo": "Risk Acceptance (Accettazione del rischio)", "corretta": false, "spiegazione": "L'accettazione implica assumersi direttamente l'eventuale danno senza contromisure o polizze." }
+          ]
+        },
+        {
+          "id": "D5_Q09", "difficolta": 9, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Cosa differenzia un'analisi dei rischi quantitativa da una qualitativa?",
+          "risposte": [
+            { "id": "A", "testo": "L'analisi quantitativa assegna valori monetari oggettivi ad asset e perdite attese; quella qualitativa utilizza scale descrittive (es. Basso, Medio, Alto)", "corretta": true, "spiegazione": "L'approccio quantitativo supporta analisi costi-benefici, mentre il qualitativo permette valutazioni rapide." },
+            { "id": "B", "testo": "L'analisi qualitativa è vietata dagli standard internazionali ISO/IEC 27001", "corretta": false, "spiegazione": "Gli standard internazionali ammettono entrambe le metodologie purché coerenti e documentate." },
+            { "id": "C", "testo": "L'analisi quantitativa non considera mai il valore economico dei beni informativi", "corretta": false, "spiegazione": "Il valore economico dell'asset è la base stessa del calcolo quantitativo del rischio." }
+          ]
+        },
+        {
+          "id": "D5_Q10", "difficolta": 10, "livello": "Intermedio (Studente Universitario / Junior)",
+          "domanda": "Nella governance dei dati, quale responsabilità distingue il Data Owner dal Data Custodian?",
+          "risposte": [
+            { "id": "A", "testo": "Il Data Owner stabilisce classificazione e requisiti di accesso dei dati; il Data Custodian implementa i controlli tecnici, i backup e la manutenzione", "corretta": true, "spiegazione": "La separazione distingue la responsabilità decisionale di business dall'esecuzione tecnica quotidiana." },
+            { "id": "B", "testo": "Il Data Custodian decide arbitrariamente chi può accedere ai dati finanziari senza consultare il management", "corretta": false, "spiegazione": "L'autorizzazione all'accesso spetta al proprietario del dato, non all'amministratore tecnico." },
+            { "id": "C", "testo": "Il Data Owner configura personalmente gli switch di rete e i nastri di backup ogni notte", "corretta": false, "spiegazione": "Le operazioni infrastrutturali sono delegate al custodian secondo le direttive dell'owner." }
+          ]
+        },
+        {
+          "id": "D5_Q11", "difficolta": 11, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Come si calcola l'Annualized Loss Expectancy (ALE) nella valutazione quantitativa del rischio?",
+          "risposte": [
+            { "id": "A", "testo": "Moltiplicando la Single Loss Expectancy (SLE) per l'Annualized Rate of Occurrence (ARO)", "corretta": true, "spiegazione": "La perdita attesa annua combina il danno economico del singolo evento con la sua frequenza stimata." },
+            { "id": "B", "testo": "Dividendo il numero di firewall installati per il costo mensile della connessione Internet", "corretta": false, "spiegazione": "Il calcolo del rischio lega valore dell'asset, fattore di esposizione e frequenza della minaccia." },
+            { "id": "C", "testo": "Sommando la durata in secondi di tutti gli aggiornamenti del sistema operativo", "corretta": false, "spiegazione": "L'ALE è una grandezza finanziaria espressa in valuta per anno." }
+          ]
+        },
+        {
+          "id": "D5_Q12", "difficolta": 12, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è la relazione tra Rischio Inerente (Inherent Risk) e Rischio Residuo (Residual Risk)?",
+          "risposte": [
+            { "id": "A", "testo": "Il rischio inerente è il livello di rischio prima dell'applicazione dei controlli; il rischio residuo è ciò che permane dopo aver implementato le mitigazioni", "corretta": true, "spiegazione": "Nessun controllo elimina totalmente il rischio; la quota residua deve rientrare nella soglia accettata dal management." },
+            { "id": "B", "testo": "Il rischio residuo è sempre superiore al rischio inerente dopo l'installazione di controlli efficaci", "corretta": false, "spiegazione": "L'applicazione di controlli adeguati riduce il livello di esposizione iniziale." },
+            { "id": "C", "testo": "Il rischio inerente esiste solo nelle aziende che non utilizzano computer", "corretta": false, "spiegazione": "Ogni processo aziendale possiede un profilo di rischio intrinseco prima delle contromisure." }
+          ]
+        },
+        {
+          "id": "D5_Q13", "difficolta": 13, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è lo scopo del processo di Due Diligence nel Vendor Risk Management prima di affidare dati sensibili a un fornitore?",
+          "risposte": [
+            { "id": "A", "testo": "Verificare oggettivamente postura di sicurezza, certificazioni, solidità finanziaria e conformità normativa della terza parte prima della firma", "corretta": true, "spiegazione": "La valutazione preventiva riduce il rischio di esporre l'azienda attraverso partner vulnerabili." },
+            { "id": "B", "testo": "Concedere al fornitore accesso amministrativo illimitato ai sistemi interni prima di firmare qualsiasi contratto", "corretta": false, "spiegazione": "Gli accessi devono seguire il privilegio minimo solo dopo la valutazione e la contrattualizzazione." },
+            { "id": "C", "testo": "Eliminare ogni clausola di audit e notifica delle violazioni dagli accordi commerciali", "corretta": false, "spiegazione": "I contratti con terze parti devono includere diritti di verifica e obblighi tempestivi di notifica." }
+          ]
+        },
+        {
+          "id": "D5_Q14", "difficolta": 14, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Qual è il vantaggio principale di condurre un Tabletop Exercise prima di una simulazione operativa completa?",
+          "risposte": [
+            { "id": "A", "testo": "Consente ai responsabili di verificare ruoli, flussi decisionali e lacune nei piani di risposta attraverso uno scenario guidato senza impatti sui sistemi attivi", "corretta": true, "spiegazione": "L'esercitazione al tavolo evidenzia incongruenze organizzative a basso costo e senza rischi operativi." },
+            { "id": "B", "testo": "Spegne fisicamente l'alimentazione elettrica dell'intero data center primario durante l'orario di punta", "corretta": false, "spiegazione": "Il tabletop è una simulazione verbale/documentale e non interviene sull'infrastruttura fisica." },
+            { "id": "C", "testo": "Sostituisce la necessità di formare il personale tecnico sugli strumenti di monitoraggio", "corretta": false, "spiegazione": "Verifica il coordinamento decisionale ma non sostituisce l'addestramento tecnico pratico." }
+          ]
+        },
+        {
+          "id": "D5_Q15", "difficolta": 15, "livello": "Avanzato (Security Engineer)",
+          "domanda": "Cosa impone il principio di Data Minimization nella progettazione di sistemi che trattano dati personali?",
+          "risposte": [
+            { "id": "A", "testo": "Raccogliere, elaborare e conservare esclusivamente i dati adeguati, pertinenti e strettamente limitati alle finalità dichiarate", "corretta": true, "spiegazione": "Ridurre i dati raccolti diminuisce l'impatto potenziale in caso di violazione della riservatezza." },
+            { "id": "B", "testo": "Conservare a tempo indeterminato ogni dato personale raccolto per eventuali utilizzi futuri non definiti", "corretta": false, "spiegazione": "La conservazione illimitata senza finalità viola sia la minimizzazione sia la limitazione della conservazione." },
+            { "id": "C", "testo": "Comprimere i database personali in archivi non cifrati accessibili a tutti i reparti", "corretta": false, "spiegazione": "La minimizzazione riguarda la pertinenza dei dati raccolti e non la compressione dei file." }
+          ]
+        },
+        {
+          "id": "D5_Q16", "difficolta": 16, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è la differenza sostanziale tra un report di attestazione SOC 2 Type I e un report SOC 2 Type II?",
+          "risposte": [
+            { "id": "A", "testo": "Il Type I valuta l'adeguatezza della progettazione dei controlli a una data specifica; il Type II ne verifica anche l'efficacia operativa continuativa su un periodo", "corretta": true, "spiegazione": "L'osservazione prolungata nel Type II fornisce garanzie molto più solide sull'applicazione reale dei controlli." },
+            { "id": "B", "testo": "Il Type I è obbligatorio per legge per tutti i cittadini privati, mentre il Type II riguarda solo le reti Wi-Fi domestiche", "corretta": false, "spiegazione": "I report SOC 2 sono attestazioni volontarie per organizzazioni di servizi basate sui Trust Services Criteria." },
+            { "id": "C", "testo": "Il Type II viene rilasciato automaticamente senza alcun intervento di un revisore indipendente", "corretta": false, "spiegazione": "Entrambi richiedono l'esame formale da parte di un revisore contabile indipendente accreditato." }
+          ]
+        },
+        {
+          "id": "D5_Q17", "difficolta": 17, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quando è obbligatorio condurre una DPIA (Data Protection Impact Assessment) secondo l'articolo 35 del GDPR?",
+          "risposte": [
+            { "id": "A", "testo": "Prima di avviare un trattamento che, per natura, oggetto, contesto o finalità (specie con nuove tecnologie), può presentare un rischio elevato per i diritti delle persone", "corretta": true, "spiegazione": "La valutazione preventiva identifica e mitiga i rischi per i diritti e le libertà degli interessati prima dell'avvio." },
+            { "id": "B", "testo": "Solo dopo che si è verificata una violazione pubblica dei dati sui social network", "corretta": false, "spiegazione": "La DPIA è uno strumento preventivo ex-ante, non una procedura successiva a un incidente." },
+            { "id": "C", "testo": "Unicamente per l'acquisto di materiale di cancelleria per gli uffici amministrativi", "corretta": false, "spiegazione": "Si applica ai trattamenti di dati personali ad alto rischio, non agli acquisti generici." }
+          ]
+        },
+        {
+          "id": "D5_Q18", "difficolta": 18, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Come si governa efficacemente il rischio di quarta parte (Fourth-Party Risk) all'interno di un programma di Third-Party Risk Management?",
+          "risposte": [
+            { "id": "A", "testo": "Imponendo clausole di trasparenza sui sub-fornitori, analizzando la Software Bill of Materials (SBOM) e mappando le dipendenze critiche condivise", "corretta": true, "spiegazione": "La visibilità sulle dipendenze a valle rivela rischi di concentrazione su infrastrutture o librerie comuni." },
+            { "id": "B", "testo": "Ignorando completamente i fornitori dei propri partner poiché non esiste un contratto diretto con essi", "corretta": false, "spiegazione": "La compromissione di un sub-fornitore critico impatta direttamente la continuità e sicurezza dei servizi erogati." },
+            { "id": "C", "testo": "Vietando ai fornitori qualsiasi utilizzo di librerie software o servizi di hosting", "corretta": false, "spiegazione": "Il divieto assoluto è irrealistico; occorre invece governare e monitorare la catena di fornitura." }
+          ]
+        },
+        {
+          "id": "D5_Q19", "difficolta": 19, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Qual è la distinzione funzionale tra KRI (Key Risk Indicators) e KPI (Key Performance Indicators) nella governance della sicurezza?",
+          "risposte": [
+            { "id": "A", "testo": "I KRI fungono da segnali predittivi sull'avvicinamento alle soglie di tolleranza al rischio; i KPI misurano l'efficienza operativa dei processi e dei controlli", "corretta": true, "spiegazione": "I KRI supportano decisioni proattive sul profilo di rischio, mentre i KPI valutano le prestazioni operative." },
+            { "id": "B", "testo": "I KRI misurano esclusivamente la temperatura dei condizionatori, mentre i KPI calcolano il fatturato lordo", "corretta": false, "spiegazione": "Entrambi sono metriche di governance della sicurezza con finalità distinte di rischio e prestazione." },
+            { "id": "C", "testo": "I KPI sostituiscono la necessità di definire una strategia di gestione del rischio aziendale", "corretta": false, "spiegazione": "Le metriche misurano l'attuazione della strategia ma non possono sostituire la definizione degli obiettivi." }
+          ]
+        },
+        {
+          "id": "D5_Q20", "difficolta": 20, "livello": "Esperto (Professore Universitario / Ricercatore)",
+          "domanda": "Quale ruolo svolge la funzione 'Govern' introdotta nel NIST Cybersecurity Framework (CSF) 2.0 rispetto alle altre cinque funzioni?",
+          "risposte": [
+            { "id": "A", "testo": "Stabilisce contesto organizzativo, strategia di rischio, ruoli e supervisione esecutiva, orientando trasversalmente Identify, Protect, Detect, Respond e Recover", "corretta": true, "spiegazione": "La governance allinea le priorità tecniche di cybersicurezza agli obiettivi strategici e alla tolleranza al rischio del vertice." },
+            { "id": "B", "testo": "Esegue direttamente la scansione delle porte TCP su tutti gli host della rete locale ogni cinque minuti", "corretta": false, "spiegazione": "Le attività tecniche di inventario e rilevamento appartengono alle funzioni operative, non alla governance." },
+            { "id": "C", "testo": "Elimina la funzione Identify rendendo superflua la classificazione degli asset aziendali", "corretta": false, "spiegazione": "La funzione Govern coordina e rafforza tutte le altre funzioni senza sostituirne alcuna." }
+          ]
+        }
+      ]
+    }
+  ]
+}

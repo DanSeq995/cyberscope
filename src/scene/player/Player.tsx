@@ -6,6 +6,7 @@ import { Vector3 } from 'three'
 
 import { useGameStore } from '@/state/game'
 
+import { doorAt } from '../office/doors'
 import { PLAYER, SPAWNS, STATIONS, ZONES, type StationId } from '../office/layout'
 import type { Control } from './controls'
 
@@ -98,6 +99,8 @@ export function Player() {
     if (zone !== game.zone) game.setZone(zone)
     const near = stationAt(p.x, p.z)
     if (near !== game.near) game.setNear(near)
+    const nearDoor = near ? null : doorAt(p.x, p.z)
+    if (nearDoor !== game.nearDoor) game.setNearDoor(nearDoor)
 
     // Con un PC da scrivania aperto la camera la guida lo zoom sul monitor (DeskCamera).
     if (currentView === 'fps' && desk === 'closed') {

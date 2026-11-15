@@ -86,7 +86,7 @@ function Terminal({ closing }: { closing: boolean }) {
     >
       <div style={SCREEN_STYLE} className="flex max-w-full flex-col overflow-hidden text-slate-200">
         <header className="flex items-center justify-between gap-3 border-b border-slate-700 bg-slate-900 px-3 py-1.5">
-          <span className="text-sm text-slate-300">PC red team · rete ospiti</span>
+          <span className="text-sm text-slate-300">PC red team · rete ospiti · MITRE ATT&amp;CK</span>
           <div className="flex items-center gap-4 text-sm">
             <span>
               Punti <b className="text-rose-300 tabular-nums">{total}</b>
@@ -162,6 +162,7 @@ function Terminal({ closing }: { closing: boolean }) {
             {current ? (
               <div className="rounded-lg border border-slate-700 bg-slate-950/60 p-3">
                 <div className="text-xs text-rose-300">
+                  <span className="mr-1.5 rounded border border-rose-400/50 px-1 py-px text-[10px] tracking-wide">MITRE ATT&amp;CK</span>
                   {current.tactic}
                   {current.technique ? ` · ${current.technique.id} ${current.technique.name}` : ''}
                 </div>

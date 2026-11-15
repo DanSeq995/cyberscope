@@ -5,6 +5,7 @@ import { FIX_POLICY, INITIAL_POLICIES, type FirewallPolicy } from '@/sim/firewal
 import { dueEvents, GUEST_DEVICE_IP, RDP_PORT, TARGET_HOST } from '@/sim/redteam'
 import { RECENT_EVENTS_SPL, type HecPayload, type HecResponse } from '@/sim/splunk/client'
 import { MockSplunk } from '@/sim/splunk/mockSplunk'
+import { useKnowledgeStore } from '@/state/knowledge'
 import type { NotableAlert, RuleId } from '@/sim/types'
 
 /** Unico punto da cambiare per usare uno Splunk vero (tramite un backend). */
@@ -90,6 +91,8 @@ export const useSocStore = create<SocState>((set, get) => {
     toggle: () => {
       generation += 1
       splunk.reset()
+      // Ogni nuova simulazione è un nuovo incidente: i suggerimenti della console firewall si ricomprano.
+      useKnowledgeStore.getState().clearHints('fw:')
       if (get().phase !== 'idle') set({ ...initial })
       else set({ ...initial, phase: 'monitoring', startedAt: Date.now() / 1000 })
     },

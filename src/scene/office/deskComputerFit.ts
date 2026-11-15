@@ -1,5 +1,7 @@
 import { Box3, Group, Line, Mesh, Object3D, Vector3 } from 'three'
 
+import { makeMaterialsStandard, memoPrepared, mergeByMaterial } from './gltfOptimize'
+
 export const DESK_COMPUTER_GLB = '/models/computer-tastiera.glb'
 
 /** Larghezza pannello monitor (m), allineata al greybox precedente. */
@@ -114,7 +116,7 @@ function computeLayout(monitorBox: Box3): DeskComputerLayout {
 }
 
 /** Scala e allinea il GLB; corregge la tastiera e nasconde il pannello display del modello. */
-export function prepareDeskComputer(scene: Object3D): PreparedDeskComputer {
+function prepareDeskComputerOnce(scene: Object3D): PreparedDeskComputer {
   const root = scene.clone(true)
   const meshes = collectMeshes(root)
 
@@ -160,8 +162,12 @@ export function prepareDeskComputer(scene: Object3D): PreparedDeskComputer {
   for (const mesh of monitorMeshes) unionBox(monitorBox, meshBox(mesh))
   const layout = computeLayout(monitorBox)
   hideDisplayPanel(monitorMeshes)
-  return { root, layout }
+  makeMaterialsStandard(root)
+  return { root: mergeByMaterial(root), layout }
 }
+
+/** Versione condivisa tra le istanze (prepara e unisce le mesh una volta sola). */
+export const prepareDeskComputer = memoPrepared(prepareDeskComputerOnce)
 
 /**
  * Centro dello schermo nel mondo per una postazione.

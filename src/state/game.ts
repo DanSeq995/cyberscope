@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
-import { releasePointer } from '@/lib/pointer'
+import { lockPointer, releasePointer } from '@/lib/pointer'
+import type { DoorId } from '@/scene/office/doors'
 import type { DeskPcId, StationId, Team } from '@/scene/office/layout'
 
 /** fps = prima persona (gioco), map = vista pianta dall'alto (debug greybox). */
@@ -33,6 +34,8 @@ interface GameState {
   /** Punto di interazione (STATIONS) entro cui si trova il giocatore, null se nessuno. */
   near: StationId | null
   setNear: (near: StationId | null) => void
+  nearDoor: DoorId | null
+  setNearDoor: (nearDoor: DoorId | null) => void
   /** Dashboard SOC a tutto schermo (tasto F): il giocatore resta fermo finché è aperta. */
   socFullscreen: boolean
   toggleSocFullscreen: () => void
@@ -51,6 +54,16 @@ interface GameState {
    * Finché è vero, la perdita del pointer lock non chiude le schermate e non mostra la pausa.
    */
   cursorFree: boolean
+  /**
+   * Pannello della chat di squadra (tasto C). Libera il mouse come `cursorFree`: la perdita del pointer lock
+   * non è una pausa e non chiude le altre schermate. Non fa parte di CLOSED_OVERLAYS (sopravvive al cambio vista).
+   */
+  chatOpen: boolean
+  /** Il mouse era catturato quando la chat è stata aperta: alla chiusura con C va ricatturato. */
+  chatRelock: boolean
+  openChat: () => void
+  /** `relock` = ricattura il mouse (solo dentro un gesto valido: tasto C, non Esc). */
+  closeChat: (relock: boolean) => void
   toggleView: () => void
 }
 
@@ -72,21 +85,32 @@ function screenChange<T extends object>(patch: T, state: LaptopState | DeskState
   return { ...patch, socFullscreen: false }
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   team: null,
   entered: false,
-  chooseTeam: (team) => set({ team, entered: true, view: 'fps', locked: false, zone: null, near: null, ...CLOSED_OVERLAYS }),
-  leaveTeam: () => set({ team: null, view: 'fps', locked: false, zone: null, near: null, ...CLOSED_OVERLAYS }),
+  chooseTeam: (team) =>
+    set({ team, entered: true, view: 'fps', locked: false, zone: null, near: null, nearDoor: null, ...CLOSED_OVERLAYS, chatOpen: false }),
+  leaveTeam: () =>
+    set({ team: null, view: 'fps', locked: false, zone: null, near: null, nearDoor: null, ...CLOSED_OVERLAYS, chatOpen: false }),
   view: 'fps',
   locked: false,
   // Esc in gioco rilascia il puntatore (il browser non lo impedisce): chiude anche tutto schermo, portatile e
-  // PC da scrivania. Se invece il mouse è stato liberato apposta per un PC (cursorFree), le schermate restano aperte.
+  // PC da scrivania. Se invece il mouse è stato liberato apposta per un PC (cursorFree) o per la chat, le schermate
+  // restano aperte. Un click sulla scena con la chat aperta ricattura il mouse: la chat si chiude e si torna al gioco.
   setLocked: (locked) =>
-    set((s) => (locked ? { locked, cursorFree: false } : s.cursorFree ? { locked } : { locked, ...CLOSED_OVERLAYS })),
+    set((s) =>
+      locked
+        ? { locked, cursorFree: false, chatOpen: false }
+        : s.cursorFree || s.chatOpen
+          ? { locked }
+          : { locked, ...CLOSED_OVERLAYS },
+    ),
   zone: null,
   setZone: (zone) => set({ zone }),
   near: null,
   setNear: (near) => set({ near }),
+  nearDoor: null,
+  setNearDoor: (nearDoor) => set({ nearDoor }),
   socFullscreen: false,
   toggleSocFullscreen: () =>
     set((s) => (s.laptop === 'closed' && s.desk === 'closed' ? { socFullscreen: !s.socFullscreen } : {})),
@@ -103,6 +127,18 @@ export const useGameStore = create<GameState>((set) => ({
   },
   openDesk: (deskPc) => set(screenChange({ desk: 'opening' as DeskState, deskPc }, 'opening')),
   cursorFree: false,
+  chatOpen: false,
+  chatRelock: false,
+  openChat: () => {
+    // Prima il flag, poi il rilascio: così setLocked(false) trova la chat aperta e non la legge come pausa.
+    set((s) => ({ chatOpen: true, chatRelock: s.locked }))
+    releasePointer()
+  },
+  closeChat: (relock) => {
+    if (relock && get().chatRelock) lockPointer()
+    set({ chatOpen: false, chatRelock: false })
+  },
   toggleView: () =>
-    set((s) => ({ view: s.view === 'fps' ? 'map' : 'fps', locked: false, ...CLOSED_OVERLAYS })),
+    // La chat resta aperta, ma dopo il cambio vista non si ricattura il mouse chiudendola.
+    set((s) => ({ view: s.view === 'fps' ? 'map' : 'fps', locked: false, ...CLOSED_OVERLAYS, chatRelock: false })),
 }))

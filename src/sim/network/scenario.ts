@@ -227,3 +227,19 @@ export const MAIL_DONE: Mail = {
     'Il team Progetti può iniziare. Grazie per il lavoro pulito!',
   ],
 }
+
+/**
+ * Suggerimenti dell'Analisi Assistita (a pagamento in Knowledge Credits), uno per controllo di `check.ts`:
+ * si compra quello del primo controllo non superato. Indicano dove guardare senza dare la soluzione completa.
+ */
+export const NET_HINTS: Record<string, string> = {
+  devices:
+    'Servono tre apparati nuovi: un router per la rete della stanza, un firewall che lo protegga e il server. Trascinali dalla palette dentro il riquadro della nuova stanza.',
+  cabling: `L'ordine dei cavi è ${SPEC.coreSwitch} → firewall → router → server: il firewall va in mezzo tra la LAN uffici e il router, il server sull'altra porta del router. Usa una porta libera di ${SPEC.coreSwitch}.`,
+  router: `Il router ha due interfacce in due reti diverse: quella verso ${SPEC.coreSwitch} sta nella LAN uffici (${SPEC.uplinkIp}), quella verso il server nella nuova rete (${SPEC.lanIp}). Controlla che entrambe siano accese e non scambiate.`,
+  server: `Il server vive nella rete della stanza: indirizzo ${SPEC.serverIp}, maschera ${SPEC.mask}, e come gateway l'interfaccia del router nella sua stessa rete.`,
+  ping: 'Se il ping al gateway non passa, tra server e router c\'è un firewall che blocca ICMP: il firewall va messo tra la LAN uffici e il router, non davanti al server.',
+  https: `Il firewall nuovo applica il deny implicito: serve una regola permit con sorgente ${SPEC.officeNet}, destinazione ${SPEC.serverIp} e servizio tcp/${SPEC.service.port}, prima di eventuali deny.`,
+  guest: `La regola permit è troppo larga sulla sorgente: con "any" passa anche la rete ospiti 192.168.50.0/24. Restringi la sorgente a ${SPEC.officeNet}.`,
+  rdp: `La regola permit apre troppe porte: deve consentire solo tcp/${SPEC.service.port}. Tutto il resto, RDP tcp/3389 compreso, lo ferma il deny implicito.`,
+}

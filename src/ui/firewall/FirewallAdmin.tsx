@@ -1,11 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { BEZEL_COLOR, SCREEN_FILL, SCREEN_H, SCREEN_W } from '@/scene/player/laptopScreen'
-import { DEFAULT_POLICY, FIX_POLICY, OPTIONS, QUESTION, TAKEAWAY, type FirewallPolicy } from '@/sim/firewall'
+import {
+  DEFAULT_POLICY,
+  FIFTY_TARGET,
+  FIX_POLICY,
+  LOG_HINT,
+  OPTIONS,
+  QUESTION,
+  TAKEAWAY,
+  type FirewallPolicy,
+} from '@/sim/firewall'
 import { useGameStore } from '@/state/game'
+import { useKnowledgeStore } from '@/state/knowledge'
 import { useSocStore } from '@/state/soc'
 
+import { BrowserTab } from '../BrowserTab'
 import { CloseButton } from '../CloseButton'
+import { HintButton } from '../HintButton'
 import { useLockedScroll } from '../useLockedScroll'
 
 import { SplunkAlertTab } from './SplunkAlertTab'
@@ -106,8 +118,8 @@ function AdminWindow({ closing }: { closing: boolean }) {
             <span className="size-3 rounded-full bg-amber-400" />
             <span className="size-3 rounded-full bg-emerald-400" />
           </span>
-          <BrowserTab active={tab === 'splunk'} label="Splunk · Alert" dot="bg-red-500" onSelect={() => setTab('splunk')} />
-          <BrowserTab active={tab === 'firewall'} label="Firewall fw-01" dot="bg-sky-500" onSelect={() => setTab('firewall')} />
+          <BrowserTab active={tab === 'splunk'} label="Splunk ES · Alert" dot="bg-red-500" onSelect={() => setTab('splunk')} />
+          <BrowserTab active={tab === 'firewall'} label="Cisco Secure Firewall · fw-01" dot="bg-sky-500" onSelect={() => setTab('firewall')} />
           <span className="mb-1.5 ml-auto text-xs text-slate-500">
             clic sulle schede o <Key>Tab</Key>
           </span>
@@ -142,27 +154,13 @@ function AdminWindow({ closing }: { closing: boolean }) {
   )
 }
 
-function BrowserTab({ active, label, dot, onSelect }: { active: boolean; label: string; dot: string; onSelect: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`flex cursor-pointer items-center gap-2 rounded-t-lg px-4 py-1.5 text-sm ${
-        active ? 'bg-white font-semibold text-slate-800' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
-      }`}
-    >
-      <span className={`size-2 rounded-full ${dot}`} />
-      {label}
-    </button>
-  )
-}
-
 function LoginForm({ typedUser, typedPass, submitting }: { typedUser: number; typedPass: number; submitting: boolean }) {
   return (
     <div className="grid h-full place-items-center">
       <div className="w-80 rounded-lg border border-slate-200 bg-white p-6 shadow">
+        <p className="text-xs font-medium tracking-wide text-sky-700">Cisco Secure Firewall Management Center</p>
         <h2 className="mb-1 text-lg font-semibold">fw-01 · Accesso amministratore</h2>
-        <p className="mb-4 text-xs text-slate-500">Firewall perimetrale · sede Netroom</p>
+        <p className="mb-4 text-xs text-slate-500">fw-01 · firewall perimetrale · sede Netroom</p>
         <label className="mb-1 block text-xs text-slate-500">Utente</label>
         <div className="mb-3 h-9 rounded border border-slate-300 px-2 py-1.5 font-mono">
           {USER.slice(0, typedUser)}
@@ -189,12 +187,16 @@ function PolicyConsole({ active }: { active: boolean }) {
   const [wrong, setWrong] = useState<string[]>([])
   const [lastPick, setLastPick] = useState<string | null>(null)
   const result = useRef<HTMLDivElement>(null)
+  // Analisi Assistita comprata con i Knowledge Credits (vale per l'incidente in corso).
+  const fifty = useKnowledgeStore((s) => s.hints.includes('fw:fifty'))
+  const logHint = useKnowledgeStore((s) => s.hints.includes('fw:log'))
+  const eliminated = fifty ? FIFTY_TARGET : null
 
   const solved = phase === 'resolved'
 
   /** Stessa logica per clic e tasti 1/2/3: le risposte sbagliate già provate sono disattivate. */
   const choose = (option: (typeof OPTIONS)[number]) => {
-    if (solved || wrong.includes(option.id)) return
+    if (solved || wrong.includes(option.id) || option.id === eliminated) return
     setLastPick(option.id)
     if (option.correct) applyFix()
     else setWrong((w) => [...w, option.id])
@@ -224,6 +226,9 @@ function PolicyConsole({ active }: { active: boolean }) {
 
   return (
     <div data-scroll className="flex h-full flex-col gap-2 overflow-y-auto p-3 text-sm">
+      <p className="text-xs font-medium tracking-wide text-sky-700">
+        Cisco Secure Firewall Management Center · fw-01 · firewall perimetrale · sede Netroom
+      </p>
       <Situation solved={solved} />
 
       <p className="flex items-center gap-2 text-xs text-slate-600">
@@ -240,8 +245,9 @@ function PolicyConsole({ active }: { active: boolean }) {
         <ol className="space-y-1.5">
           {OPTIONS.map((o, i) => {
             const isWrong = wrong.includes(o.id)
+            const isOut = o.id === eliminated && !isWrong
             const isRight = solved && o.correct
-            const clickable = !solved && !isWrong
+            const clickable = !solved && !isWrong && !isOut
             return (
               <li
                 key={o.id}
@@ -251,12 +257,15 @@ function PolicyConsole({ active }: { active: boolean }) {
                     ? 'border-emerald-400 bg-emerald-50'
                     : isWrong
                       ? 'border-red-200 bg-red-50 text-slate-400 line-through'
-                      : 'border-slate-200'
+                      : isOut
+                        ? 'border-dashed border-amber-300 bg-amber-50/60 text-slate-400 line-through'
+                        : 'border-slate-200'
                 } ${clickable ? 'cursor-pointer hover:border-sky-400 hover:bg-sky-50' : ''}`}
               >
                 <Key>{i + 1}</Key>
                 <code className="font-mono">{o.policy}</code>
                 <span className="text-slate-500">— {o.position}</span>
+                {isOut && <span className="ml-auto text-xs font-semibold inline-block text-amber-700">esclusa dall’analisi</span>}
               </li>
             )
           })}
@@ -268,6 +277,27 @@ function PolicyConsole({ active }: { active: boolean }) {
           >
             {picked.explanation}
             {!picked.correct && <span className="font-semibold"> Riprova.</span>}
+          </div>
+        )}
+
+        {!solved && (
+          <div className="mt-3 border-t border-slate-200 pt-2">
+            <div className="mb-1.5 text-xs font-bold tracking-wide text-slate-500 uppercase">Analisi assistita</div>
+            <div className="flex flex-wrap items-start gap-2">
+              <HintButton
+                id="fw:fifty"
+                label="50/50: escludi una risposta sbagliata"
+                // Dopo un errore resta una sola risposta sbagliata: il 50/50 non avrebbe senso.
+                disabled={wrong.length > 0}
+              />
+              <HintButton id="fw:log" label="Indizio sul log" />
+            </div>
+            {logHint && (
+              <p className="mt-2 rounded border-l-4 border-amber-500 bg-amber-50 px-3 py-1.5 text-amber-950">
+                <span className="font-semibold">Indizio: </span>
+                {LOG_HINT}
+              </p>
+            )}
           </div>
         )}
 
@@ -381,18 +411,19 @@ function PolicyTable({ policies, solved }: { policies: FirewallPolicy[]; solved:
                   {p.action.toUpperCase()}
                 </span>
               </td>
-              <td className="px-2 py-1">{p.source}</td>
+              <td className="px-2 py-1 whitespace-nowrap">{p.source}</td>
               <td className="px-2 py-1">{p.destination}</td>
-              <td className="px-2 py-1 font-mono text-xs">{p.service}</td>
+              <td className="px-2 py-1 font-mono text-xs whitespace-nowrap">{p.service}</td>
               <td className="px-2 py-1 text-slate-600">
                 {p.note}
                 {culprit && !solved && (
-                  <span className="ml-2 rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                  // Su una riga a sé e senza a capo: dentro la cella stretta l'etichetta non si spezza.
+                  <span className="mt-1 block w-fit rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold whitespace-nowrap text-white">
                     ← ha lasciato passare l’ospite
                   </span>
                 )}
                 {p.id === FIX_POLICY.id && (
-                  <span className="ml-2 rounded bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                  <span className="mt-1 block w-fit rounded bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold whitespace-nowrap text-white">
                     nuova · ora blocca l’ospite
                   </span>
                 )}

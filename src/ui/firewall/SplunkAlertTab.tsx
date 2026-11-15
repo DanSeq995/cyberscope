@@ -36,7 +36,7 @@ export function SplunkAlertTab() {
   return (
     <div data-scroll className="flex h-full flex-col gap-3 overflow-y-auto bg-slate-950 p-4 font-mono text-[13px] text-slate-200">
       <div className="flex items-center gap-2">
-        <span className="text-sky-400">Splunk › Alert notabili ›</span>
+        <span className="text-sky-400">Splunk Enterprise Security › Alert notabili ›</span>
         <span className="rounded bg-red-600 px-1.5 text-xs font-bold text-white">ALTA</span>
         <span className="font-sans text-base font-semibold text-white">{alert.title}</span>
         <span className="ml-auto text-slate-400">{new Date(alert.trigger_time * 1000).toLocaleTimeString('it-IT')}</span>

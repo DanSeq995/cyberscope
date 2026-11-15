@@ -119,3 +119,16 @@ export const OPTIONS: QuizOption[] = [
 /** Lezione finale mostrata dopo la risposta giusta. */
 export const TAKEAWAY =
   'Nota: R4 resta pericolosa. Le regole “temporanee” troppo larghe vanno rimosse appena finito il test.'
+
+/** Suggerimento "Indizio sul log" (Analisi Assistita a pagamento nella console). */
+export const LOG_HINT =
+  'Nel log del firewall la connessione 192.168.50.23 → srv-01:3389 risulta consentita dalla regola R4. Le policy si leggono dall’alto: la regola che blocca deve essere letta prima di R4, e deve fermare solo quel traffico (rete ospiti, srv-01, porta 3389).'
+
+/**
+ * Risposta sbagliata che il 50/50 toglie di mezzo: scelta a caso una volta per sessione, così resta la stessa
+ * anche chiudendo e riaprendo il portatile.
+ */
+export const FIFTY_TARGET = (() => {
+  const wrong = OPTIONS.filter((o) => !o.correct)
+  return wrong[Math.floor(Math.random() * wrong.length)].id
+})()

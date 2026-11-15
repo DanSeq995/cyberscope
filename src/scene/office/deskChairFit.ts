@@ -1,5 +1,6 @@
 import { Box3, Line, Mesh, Object3D, Vector3 } from 'three'
 
+import { makeMaterialsStandard, memoPrepared, mergeByMaterial } from './gltfOptimize'
 import { DESK } from './layout'
 
 export const DESK_CHAIR_GLB = '/models/desk-chair.glb'
@@ -75,7 +76,7 @@ export interface PreparedDeskChair {
 /**
  * Scala sul tampo largo a `DESK.width`; piano PC sul pannello di lavoro visivo.
  */
-export function prepareDeskChair(scene: Object3D): PreparedDeskChair {
+function prepareDeskChairOnce(scene: Object3D): PreparedDeskChair {
   const root = scene.clone(true)
   const meshes = collectMeshes(root)
   const deskTops = meshes.filter(isThinDeskTop)
@@ -102,8 +103,9 @@ export function prepareDeskChair(scene: Object3D): PreparedDeskChair {
   const footprint = new Vector3()
   new Box3().setFromObject(root).getSize(footprint)
 
+  makeMaterialsStandard(root)
   return {
-    root,
+    root: mergeByMaterial(root),
     layout: {
       deskTopY,
       baseYaw: Math.PI,
@@ -111,6 +113,9 @@ export function prepareDeskChair(scene: Object3D): PreparedDeskChair {
     },
   }
 }
+
+/** Versione condivisa tra le istanze (prepara e unisce le mesh una volta sola). */
+export const prepareDeskChair = memoPrepared(prepareDeskChairOnce)
 
 export function deskSurfaceWorldY(deskTopY = DESK_CHAIR_LAYOUT.deskTopY) {
   return DESK_FLOOR_LIFT + deskTopY

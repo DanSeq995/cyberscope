@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 
+import { useChatStore } from '@/state/chat'
+import { useDoorsStore } from '@/state/doors'
 import { useGameStore } from '@/state/game'
 import { useSocStore } from '@/state/soc'
 import { useWorkStore, type WorkPhase } from '@/state/work'
 
 import { closeComputer, isTyping } from './computer'
+import { NewGameButton } from './NewGameButton'
 
 function Key({ children }: { children: React.ReactNode }) {
   return (
@@ -41,10 +44,14 @@ export function Hud() {
   const toggleSocFullscreen = useGameStore((s) => s.toggleSocFullscreen)
   const laptop = useGameStore((s) => s.laptop)
   const near = useGameStore((s) => s.near)
+  const nearDoor = useGameStore((s) => s.nearDoor)
+  const doorOpen = useDoorsStore((s) => (nearDoor ? s.open[nearDoor] : false))
   const desk = useGameStore((s) => s.desk)
   const workPhase = useWorkStore((s) => s.phase)
   const socFullscreen = useGameStore((s) => s.socFullscreen)
   const cursorFree = useGameStore((s) => s.cursorFree)
+  const chatOpen = useGameStore((s) => s.chatOpen)
+  const unread = useChatStore((s) => s.unread)
   const team = useGameStore((s) => s.team)
   const leaveTeam = useGameStore((s) => s.leaveTeam)
   const red = team === 'red'
@@ -60,6 +67,11 @@ export function Hud() {
       const game = useGameStore.getState()
       // Schermata di scelta della squadra: nessun comando di gioco.
       if (!game.team) return
+      // Chat aperta: Esc la chiude lasciando il mouse libero (compare la pausa). Prima di isTyping: vale anche nel campo.
+      if (e.code === 'Escape' && game.chatOpen) {
+        game.closeChat(false)
+        return
+      }
       // Cursore libero su un PC: Esc lo chiude e porta alla pausa (il browser non ricattura il mouse con Esc).
       if (e.code === 'Escape' && game.cursorFree) {
         closeComputer(false)
@@ -67,6 +79,17 @@ export function Hud() {
       }
       // Si sta scrivendo in un campo di un PC: le lettere non sono comandi di gioco.
       if (isTyping(e)) return
+      // C apre/chiude la chat da qualunque punto; chiudendola si ricattura il mouse dentro il gesto (tasto ≠ Esc).
+      if (e.code === 'KeyC') {
+        if (game.chatOpen) game.closeChat(true)
+        else game.openChat()
+        return
+      }
+      // M = microfono della chiamata in corso, da qualsiasi punto della partita.
+      if (e.code === 'KeyM') {
+        useChatStore.getState().toggleMute()
+        return
+      }
       if (e.code === 'KeyV') {
         if (document.pointerLockElement) document.exitPointerLock()
         toggleView()
@@ -85,6 +108,7 @@ export function Hud() {
         if (canOpenLaptop()) game.setLaptop('opening')
         else if (game.near === 'study' || game.near === 'work' || game.near === 'red') game.openDesk(game.near)
         else if (game.near === 'team-rack') useWorkStore.getState().install()
+        else if (game.nearDoor) useDoorsStore.getState().toggle(game.nearDoor)
       }
     }
     window.addEventListener('keydown', onKey)
@@ -113,19 +137,23 @@ export function Hud() {
             ? 'monta srv-03, rt-02 e fw-02 nel rack e collegali'
             : near === 'red'
               ? 'usa il PC del red team (percorso d’attacco a fasi)'
-              : null
+              : nearDoor
+                ? doorOpen
+                  ? 'chiudi la porta'
+                  : 'apri la porta'
+                : null
   const goal = red ? null : WORK_GOAL[workPhase]
 
   if (view === 'map') {
     return (
       <div className="pointer-events-none fixed bottom-4 left-4 z-10 rounded bg-black/60 px-3 py-2 text-sm text-white">
-        Vista pianta · trascina per ruotare · <Key>V</Key> torna in prima persona · {simHint}
+        Vista pianta · trascina per ruotare · <Key>V</Key> torna in prima persona · <Key>C</Key> chat · {simHint}
       </div>
     )
   }
 
-  // PC a tutto schermo con il cursore libero: niente mirino né schermata di pausa.
-  if (cursorFree) return null
+  // PC a tutto schermo o chat con il cursore libero: niente mirino né schermata di pausa.
+  if (cursorFree || chatOpen) return null
 
   if (locked) {
     return (
@@ -136,6 +164,12 @@ export function Hud() {
             <Key>E</Key> {prompt}
           </div>
         )}
+        {!red && unread > 0 && (
+          <div className="pointer-events-none fixed top-14 right-4 z-10 max-w-xs rounded-lg border border-sky-400/60 bg-black/60 px-3 py-2 text-sm text-white">
+            <span className="mr-1.5 font-semibold text-sky-300">Analista SOC</span>
+            ha scritto in Blue Team SOC · <Key>C</Key> chat
+          </div>
+        )}
         {goal && idle && (
           <div className="pointer-events-none fixed top-4 left-4 z-10 max-w-xs rounded-lg border border-amber-400/60 bg-black/60 px-3 py-2 text-sm text-white">
             <span className="mr-1.5 font-semibold text-amber-300">Richiesta IT</span>
@@ -143,7 +177,7 @@ export function Hud() {
           </div>
         )}
         <div className="pointer-events-none fixed bottom-4 left-4 z-10 rounded bg-black/40 px-3 py-2 text-xs text-white/80">
-          <Key>Esc</Key> pausa · <Key>V</Key> vista pianta · {simHint}
+          <Key>Esc</Key> pausa · <Key>V</Key> vista pianta · <Key>C</Key> chat · {simHint}
         </div>
       </>
     )
@@ -171,6 +205,9 @@ export function Hud() {
           <li>
             <Key>V</Key> — vista pianta
           </li>
+          <li>
+            <Key>C</Key> — chat di squadra e chiamata audio (<Key>M</Key> microfono)
+          </li>
           {red ? (
             <li>
               <Key>E</Key> — al PC con lo schermo acceso apri il terminale: una domanda per fase, rispondi con{' '}
@@ -182,7 +219,7 @@ export function Hud() {
                 <Key>T</Key> — avvia/azzera la simulazione (guarda il video wall del SOC)
               </li>
               <li>
-                <Key>E</Key> — al PC di studio (SOC) apri la teoria, a quello accanto la posta del sistemista; durante
+                <Key>E</Key> — al PC Biblioteca (SOC) leggi i manuali e fai i test per guadagnare crediti KC, a quello accanto la posta del sistemista; durante
                 un incidente, davanti al firewall, apri il portatile
               </li>
               <li>
@@ -191,17 +228,17 @@ export function Hud() {
             </>
           )}
         </ul>
-        <button
-          type="button"
-          // Il click non deve arrivare al documento: ricatturerebbe il mouse invece di tornare alla scelta.
-          onClick={(e) => {
-            e.stopPropagation()
-            leaveTeam()
-          }}
-          className="mt-4 cursor-pointer rounded-md border border-white/30 px-3 py-1 text-sm text-white/80 hover:bg-white/10"
-        >
-          Cambia squadra
-        </button>
+        {/* I click non devono arrivare al documento: ricatturerebbero il mouse invece di agire sui pulsanti. */}
+        <div className="mt-4 flex flex-wrap justify-center gap-2" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={leaveTeam}
+            className="cursor-pointer rounded-md border border-white/30 px-3 py-1 text-sm text-white/80 hover:bg-white/10"
+          >
+            Cambia squadra
+          </button>
+          <NewGameButton />
+        </div>
       </div>
     </div>
   )

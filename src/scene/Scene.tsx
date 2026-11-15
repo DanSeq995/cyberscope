@@ -10,6 +10,7 @@ import { Suspense } from 'react'
 
 import { useGameStore } from '@/state/game'
 
+import { FpsMeter } from './FpsMeter'
 import { MAP_TARGETS } from './office/layout'
 import { Office } from './office/Office'
 import { KEY_MAP } from './player/controls'
@@ -57,10 +58,12 @@ export function Scene() {
       <Canvas shadows>
         <color attach="background" args={['#0f1117']} />
 
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.35} />
+        {/* Luce calda dei plafoni (Ceiling.tsx) come unica luce emisferica: costo minimo per pixel */}
+        <hemisphereLight args={['#ffd9a8', '#3a342e', 0.9]} />
         <directionalLight
           position={[6, 12, 8]}
-          intensity={1.4}
+          intensity={0.85}
           castShadow
           shadow-mapSize={[2048, 2048]}
           shadow-camera-left={-16}
@@ -70,6 +73,7 @@ export function Scene() {
           shadow-bias={-0.0005}
         />
 
+        <FpsMeter />
         <Cameras />
         <SocDriver />
         {/* Anelli guida e apparati delle challenge del blue team: nella stanza del red team non servono */}

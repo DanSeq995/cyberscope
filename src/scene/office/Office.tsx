@@ -3,6 +3,8 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier'
 
 import { useGameStore } from '@/state/game'
 
+import { Ceiling } from './Ceiling'
+import { OfficeDoorGroup } from './OfficeDoorGroup'
 import { GreyBox, GreyCylinder } from './GreyBox'
 import { DESK_CHAIR_LAYOUT, DESK_FLOOR_LIFT } from './deskChairFit'
 import {
@@ -22,6 +24,7 @@ import {
 } from './layout'
 import { Desk, Rack, Workstation } from './props'
 import { Room } from './Room'
+import { WallWindow } from './WallWindow'
 
 function renderSolid(item: LayoutItem) {
   switch (item.type) {
@@ -103,6 +106,9 @@ export function Office() {
   return (
     <group>
       <Room />
+      <Ceiling />
+      <OfficeDoorGroup />
+      <WallWindow />
 
       <RigidBody type="fixed" colliders={false}>
         <CuboidCollider args={[20, 0.1, 20]} position={[0, -0.1, 0]} />

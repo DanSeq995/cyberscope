@@ -1,5 +1,8 @@
-import { SPEC } from '@/sim/network/scenario'
+import { NET_HINTS, SPEC } from '@/sim/network/scenario'
+import { useKnowledgeStore } from '@/state/knowledge'
 import { useWorkStore } from '@/state/work'
+
+import { HintButton } from '../HintButton'
 
 const MARK = {
   ok: { symbol: '✓', color: 'text-emerald-600' },
@@ -13,6 +16,10 @@ export function CheckPanel() {
   const checks = useWorkStore((s) => s.checks)
   const verify = useWorkStore((s) => s.verify)
   const approved = phase === 'install' || phase === 'done'
+  const hints = useKnowledgeStore((s) => s.hints)
+  /** L'Analisi Assistita riguarda il primo controllo non superato dell'ultima verifica. */
+  const failed = checks?.find((c) => c.status === 'fail')
+  const bought = Object.keys(NET_HINTS).filter((id) => hints.includes(`net:${id}`))
 
   return (
     <aside className="flex w-80 shrink-0 flex-col border-l border-slate-300 bg-slate-50 text-sm">
@@ -71,6 +78,33 @@ export function CheckPanel() {
             </ol>
           )}
         </section>
+
+        {!approved && (
+          <section>
+            <h3 className="mb-1.5 text-xs font-bold tracking-wide text-slate-500 uppercase">Analisi assistita</h3>
+            {failed ? (
+              <div className="space-y-1">
+                <p className="text-xs text-slate-500">
+                  Suggerimento su: <b className="text-slate-700">{failed.label}</b>
+                </p>
+                <HintButton id={`net:${failed.id}`} label="Richiedi Hint" />
+              </div>
+            ) : (
+              <p className="text-xs text-slate-500">
+                Premi Verifica: l’analisi assistita dà un suggerimento sul primo controllo non superato.
+              </p>
+            )}
+            {bought.length > 0 && (
+              <ul className="mt-2 space-y-1.5">
+                {bought.map((id) => (
+                  <li key={id} className="rounded border-l-4 border-amber-500 bg-amber-50 px-2.5 py-1.5 text-xs text-amber-950">
+                    {NET_HINTS[id]}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
       </div>
 
       {!approved && (
