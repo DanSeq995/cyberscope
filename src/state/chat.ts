@@ -1,6 +1,13 @@
 import { create } from 'zustand'
 
-import { DIALOGUE_ID_PREFIX, SOC_DIALOGUE, typingDuration } from '@/sim/webex/socDialogue'
+import {
+  DIALOGUE_ID_PREFIX,
+  INTRO_DIALOGUE,
+  INTRO_ID_PREFIX,
+  SOC_DIALOGUE,
+  typingDuration,
+  type DialogueLine,
+} from '@/sim/webex/socDialogue'
 import {
   createChatBackend,
   type CallSession,
@@ -88,7 +95,8 @@ export const useChatStore = create<ChatState>((set, get) => {
     clearDialogue: () =>
       set((s) => ({
         unread: 0,
-        typing: null,
+        // Solo se si stava scrivendo una battuta dell'incidente: il benvenuto continua.
+        typing: s.typing && SOC_DIALOGUE.some((l) => l.text === s.typing?.text) ? null : s.typing,
         messages: { ...s.messages, blue: s.messages.blue.filter((m) => !m.id.startsWith(DIALOGUE_ID_PREFIX)) },
       })),
     markRead: () => set((s) => (s.unread ? { unread: 0 } : {})),
@@ -157,37 +165,60 @@ export const useChatStore = create<ChatState>((set, get) => {
   }
 })
 
-// Dialogo Analista SOC ↔ Amministratore di rete: parte da solo al primo alert, si toglie quando T azzera.
-let dialogueTimers: ReturnType<typeof setTimeout>[] = []
-let dialogueRun = 0
+// Dialoghi scriptati nella stanza «Blue Team SOC»: le battute dell'admin si scrivono da sole nel campo di testo,
+// quelle dell'analista arrivano dopo «sta scrivendo…».
+function playDialogue(lines: readonly DialogueLine[], idPrefix: string) {
+  const run = ++dialogueRun
+  return lines.flatMap((line, i) => {
+    // La scrittura comincia solo dopo l'invio della battuta precedente: se il testo è lungo si scrive più veloce.
+    const previous = i > 0 ? lines[i - 1].delay + 300 : 0
+    const start = Math.max(line.delay - typingDuration(line), previous)
+    const duration = line.delay - start
+    const startTyping = setTimeout(() => {
+      useChatStore.setState({
+        typing: { room: 'blue', author: line.author, own: line.own, text: line.text, start: Date.now(), duration },
+      })
+    }, start)
+    const sendLine = setTimeout(() => {
+      useChatStore.setState({ typing: null })
+      useChatStore.getState().addLocal({
+        id: `${idPrefix}${run}-${i}`,
+        room: 'blue',
+        author: line.author,
+        text: line.text,
+        time: Date.now(),
+        own: line.own,
+      })
+    }, line.delay)
+    return [startTyping, sendLine]
+  })
+}
 
+let dialogueRun = 0
+let dialogueTimers: ReturnType<typeof setTimeout>[] = []
+let introTimers: ReturnType<typeof setTimeout>[] = []
+let introPlayed = false
+
+const stopIntro = () => {
+  if (introTimers.length === 0) return
+  introTimers.forEach(clearTimeout)
+  introTimers = []
+  useChatStore.setState({ typing: null })
+}
+
+// Benvenuto: una volta sola, al primo ingresso in gioco (mouse catturato) del blue team.
+const unsubscribeGame = useGameStore.subscribe((game) => {
+  if (introPlayed || game.team !== 'blue' || !game.locked) return
+  introPlayed = true
+  introTimers = playDialogue(INTRO_DIALOGUE, INTRO_ID_PREFIX)
+})
+
+// Incidente: parte da solo al primo alert (interrompendo il benvenuto se è ancora in corso), si toglie quando T azzera.
 const unsubscribeSoc = useSocStore.subscribe((soc, prev) => {
   if (soc.phase === prev.phase) return
   if (soc.phase === 'incident') {
-    const run = ++dialogueRun
-    dialogueTimers = SOC_DIALOGUE.flatMap((line, i) => {
-      // La scrittura comincia solo dopo l'invio della battuta precedente: se il testo è lungo si scrive più veloce.
-      const previous = i > 0 ? SOC_DIALOGUE[i - 1].delay + 300 : 0
-      const start = Math.max(line.delay - typingDuration(line), previous)
-      const duration = line.delay - start
-      const startTyping = setTimeout(() => {
-        useChatStore.setState({
-          typing: { room: 'blue', author: line.author, own: line.own, text: line.text, start: Date.now(), duration },
-        })
-      }, start)
-      const sendLine = setTimeout(() => {
-        useChatStore.setState({ typing: null })
-        useChatStore.getState().addLocal({
-          id: `${DIALOGUE_ID_PREFIX}${run}-${i}`,
-          room: 'blue',
-          author: line.author,
-          text: line.text,
-          time: Date.now(),
-          own: line.own,
-        })
-      }, line.delay)
-      return [startTyping, sendLine]
-    })
+    stopIntro()
+    dialogueTimers = playDialogue(SOC_DIALOGUE, DIALOGUE_ID_PREFIX)
   } else if (soc.phase === 'idle') {
     dialogueTimers.forEach(clearTimeout)
     dialogueTimers = []
@@ -195,10 +226,12 @@ const unsubscribeSoc = useSocStore.subscribe((soc, prev) => {
   }
 })
 
-// Ricaricamento a caldo in sviluppo: senza questo il vecchio modulo resterebbe iscritto e il dialogo partirebbe due volte.
+// Ricaricamento a caldo in sviluppo: senza questo il vecchio modulo resterebbe iscritto e i dialoghi partirebbero due volte.
 if (import.meta.hot) {
   import.meta.hot.dispose(() => {
+    unsubscribeGame()
     unsubscribeSoc()
     dialogueTimers.forEach(clearTimeout)
+    introTimers.forEach(clearTimeout)
   })
 }
