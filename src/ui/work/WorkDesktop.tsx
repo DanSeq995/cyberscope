@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 import { DESK_PCS } from '@/scene/office/layout'
 import { useGameStore } from '@/state/game'
@@ -16,7 +16,6 @@ const [SCREEN_W, SCREEN_H] = MONITOR.screen
 const SCREEN_STYLE = {
   height: `min(${MONITOR.fill * 100}vh, ${(MONITOR.fill * 100 * SCREEN_H) / SCREEN_W}vw)`,
   aspectRatio: `${SCREEN_W} / ${SCREEN_H}`,
-  backgroundColor: MONITOR.screenColor,
 }
 
 type App = 'mail' | 'net'
@@ -29,9 +28,29 @@ export function WorkDesktop() {
 }
 
 function Desktop({ closing }: { closing: boolean }) {
+  return (
+    <div
+      style={{ backgroundColor: MONITOR.bezelColor }}
+      // I click non devono arrivare al documento: drei PointerLockControls ricatturerebbe il mouse.
+      onClick={(e) => e.stopPropagation()}
+      className={`fixed inset-0 z-40 grid cursor-default place-items-center select-none ${
+        closing ? 'animate-out fade-out fill-mode-forwards duration-200' : 'animate-in fade-in duration-300'
+      }`}
+    >
+      <DesktopScreen style={SCREEN_STYLE} />
+    </div>
+  )
+}
+
+/**
+ * Contenuto dello schermo del PC del sistemista. `preview` = copia in sola lettura sul monitor 3D: mostra la
+ * schermata che si aprirebbe adesso (posta se c'è da leggere, altrimenti simulatore), senza pulsante di chiusura.
+ */
+export function DesktopScreen({ style, preview = false }: { style: CSSProperties; preview?: boolean }) {
   const unread = useWorkStore(selectUnread)
   // Si apre sulla posta finché c'è qualcosa da leggere, poi direttamente sul simulatore.
-  const [app, setApp] = useState<App>(() => (selectUnread(useWorkStore.getState()) > 0 ? 'mail' : 'net'))
+  const [chosen, setApp] = useState<App>(() => (selectUnread(useWorkStore.getState()) > 0 ? 'mail' : 'net'))
+  const app: App = preview ? (unread > 0 ? 'mail' : 'net') : chosen
 
   const tab = (id: App, label: string, badge = 0) => (
     <button
@@ -48,26 +67,18 @@ function Desktop({ closing }: { closing: boolean }) {
 
   return (
     <div
-      style={{ backgroundColor: MONITOR.bezelColor }}
-      // I click non devono arrivare al documento: drei PointerLockControls ricatturerebbe il mouse.
-      onClick={(e) => e.stopPropagation()}
-      className={`fixed inset-0 z-40 grid cursor-default place-items-center select-none ${
-        closing ? 'animate-out fade-out fill-mode-forwards duration-200' : 'animate-in fade-in duration-300'
-      }`}
+      style={{ ...style, backgroundColor: MONITOR.screenColor }}
+      className="flex max-w-full flex-col overflow-hidden text-slate-800"
     >
-      <div style={SCREEN_STYLE} className="flex max-w-full flex-col overflow-hidden text-slate-800">
-        <header className="flex items-end justify-between bg-slate-800 px-3 pt-1.5">
-          <div className="flex items-end gap-1">
-            <span className="mr-3 pb-1.5 text-sm text-slate-300">PC sistemista · admin@netroom.local</span>
-            {tab('mail', 'Posta', unread)}
-            {tab('net', 'Simulatore di rete')}
-          </div>
-          <div className="pb-1">
-            <CloseButton dark />
-          </div>
-        </header>
-        {app === 'mail' ? <MailApp onOpenSimulator={() => setApp('net')} /> : <NetSim />}
-      </div>
+      <header className="flex items-end justify-between bg-slate-800 px-3 pt-1.5">
+        <div className="flex items-end gap-1">
+          <span className="mr-3 pb-1.5 text-sm text-slate-300">PC sistemista · admin@netroom.local</span>
+          {tab('mail', 'Posta', unread)}
+          {tab('net', 'Simulatore di rete')}
+        </div>
+        <div className="pb-1">{!preview && <CloseButton dark />}</div>
+      </header>
+      {app === 'mail' ? <MailApp onOpenSimulator={() => setApp('net')} /> : <NetSim />}
     </div>
   )
 }

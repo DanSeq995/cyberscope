@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import type { DoorId } from '@/scene/office/doors'
+import { doorById, type DoorId } from '@/scene/office/doors'
 
 interface DoorsState {
   open: Record<DoorId, boolean>
@@ -9,5 +9,9 @@ interface DoorsState {
 
 export const useDoorsStore = create<DoorsState>((set) => ({
   open: { entrance: false, team: false, server: false },
-  toggle: (id) => set((s) => ({ open: { ...s.open, [id]: !s.open[id] } })),
+  // Le porte con lockedMessage (ingresso) restano chiuse.
+  toggle: (id) => {
+    if (doorById(id).lockedMessage) return
+    set((s) => ({ open: { ...s.open, [id]: !s.open[id] } }))
+  },
 }))

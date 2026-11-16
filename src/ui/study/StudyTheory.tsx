@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 import { DESK_PCS } from '@/scene/office/layout'
 import { READING_CAP_GAME, READING_CAP_PAGE, READING_REWARD, READING_STEP_S } from '@/sim/credits'
@@ -19,7 +19,6 @@ const [SCREEN_W, SCREEN_H] = STUDY_MONITOR.screen
 const SCREEN_STYLE = {
   height: `min(${STUDY_MONITOR.fill * 100}vh, ${(STUDY_MONITOR.fill * 100 * SCREEN_H) / SCREEN_W}vw)`,
   aspectRatio: `${SCREEN_W} / ${SCREEN_H}`,
-  backgroundColor: STUDY_MONITOR.screenColor,
 }
 
 type Tab = 'manuals' | 'lab'
@@ -38,13 +37,6 @@ export function StudyTheory() {
 }
 
 function LibraryWindow({ closing }: { closing: boolean }) {
-  const [tab, setTab] = useState<Tab>('manuals')
-  const [index, setIndex] = useState(START_INDEX)
-  const page = AVAILABLE_LESSONS[index].lesson.objective
-  const reading = useActiveReading(page, tab === 'manuals' && !closing)
-
-  const address = tab === 'manuals' ? `academy.netroom.local/manuali/${page}` : 'academy.netroom.local/training-lab'
-
   return (
     <div
       style={{ backgroundColor: STUDY_MONITOR.bezelColor }}
@@ -54,7 +46,37 @@ function LibraryWindow({ closing }: { closing: boolean }) {
         closing ? 'animate-out fade-out fill-mode-forwards duration-200' : 'animate-in fade-in duration-300'
       }`}
     >
-      <div style={SCREEN_STYLE} className="flex max-w-full flex-col overflow-hidden text-slate-800">
+      <LibraryScreen style={SCREEN_STYLE} active={!closing} />
+    </div>
+  )
+}
+
+/**
+ * Contenuto dello schermo del PC Biblioteca. `preview` = copia in sola lettura sul monitor 3D: parte dalla stessa
+ * schermata dell'apertura, senza tasti, rotella, lettura attiva né pulsante di chiusura.
+ */
+export function LibraryScreen({
+  style,
+  active,
+  preview = false,
+}: {
+  style: CSSProperties
+  active: boolean
+  preview?: boolean
+}) {
+  const [tab, setTab] = useState<Tab>('manuals')
+  const [index, setIndex] = useState(START_INDEX)
+  const page = AVAILABLE_LESSONS[index].lesson.objective
+  const live = active && !preview
+  const reading = useActiveReading(page, tab === 'manuals' && live)
+
+  const address = tab === 'manuals' ? `academy.netroom.local/manuali/${page}` : 'academy.netroom.local/training-lab'
+
+  return (
+      <div
+        style={{ ...style, backgroundColor: STUDY_MONITOR.screenColor }}
+        className="flex max-w-full flex-col overflow-hidden text-slate-800"
+      >
         {/* Barra del browser: schede, indirizzo, lettura attiva */}
         <div className="flex items-end gap-1 bg-slate-200 px-2 pt-1.5">
           <span className="mr-2 mb-2 flex gap-1.5">
@@ -69,9 +91,7 @@ function LibraryWindow({ closing }: { closing: boolean }) {
             dot="bg-amber-500"
             onSelect={() => setTab('lab')}
           />
-          <span className="mb-1 ml-auto">
-            <CloseButton />
-          </span>
+          <span className="mb-1 ml-auto">{!preview && <CloseButton />}</span>
         </div>
         <header className="flex items-center gap-4 border-b border-slate-200 bg-white px-3 py-1.5">
           <div className="min-w-0 flex-1 truncate rounded-md bg-slate-100 px-3 py-1 font-mono text-sm text-slate-600">
@@ -88,13 +108,12 @@ function LibraryWindow({ closing }: { closing: boolean }) {
 
         {/* Entrambe le schede restano montate: cambiando scheda non si perde il quesito in corso. */}
         <div className={tab === 'manuals' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}>
-          <Manuals index={index} setIndex={setIndex} active={tab === 'manuals' && !closing} />
+          <Manuals index={index} setIndex={setIndex} active={tab === 'manuals' && live} />
         </div>
         <div className={tab === 'lab' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}>
-          <TrainingLab active={tab === 'lab' && !closing} />
+          <TrainingLab active={tab === 'lab' && live} />
         </div>
       </div>
-    </div>
   )
 }
 

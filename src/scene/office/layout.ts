@@ -174,6 +174,15 @@ export const VIDEO_WALL: { position: Vec3; size: Vec3 } = {
   size: [4, 1.8, 0.08],
 }
 
+/** Area davanti al video wall (fino a poco dietro le sedie del bancone SOC): qui l'HUD suggerisce T e F. */
+const VIDEO_WALL_AREA = { margin: 1, depth: 4.5 } as const
+
+export function nearVideoWall(x: number, z: number) {
+  const [wx, , wz] = VIDEO_WALL.position
+  const halfW = VIDEO_WALL.size[0] / 2 + VIDEO_WALL_AREA.margin
+  return Math.abs(x - wx) <= halfW && z >= wz && z <= wz + VIDEO_WALL_AREA.depth
+}
+
 /**
  * z del bancone SOC. Abbastanza lontano dal video wall (~3 m) perché, in piedi dietro le sedie,
  * con FOV verticale 70° il giocatore veda tutto lo schermo sopra i monitor anche su display 4:3.

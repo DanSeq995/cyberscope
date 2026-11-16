@@ -7,7 +7,7 @@ import { Vector3 } from 'three'
 import { useGameStore } from '@/state/game'
 
 import { doorAt } from '../office/doors'
-import { PLAYER, SPAWNS, STATIONS, ZONES, type StationId } from '../office/layout'
+import { nearVideoWall, PLAYER, SPAWNS, STATIONS, ZONES, type StationId } from '../office/layout'
 import type { Control } from './controls'
 
 const HALF_SEGMENT = (PLAYER.height - PLAYER.radius * 2) / 2
@@ -17,6 +17,7 @@ const EYE_OFFSET = PLAYER.eyeHeight - CENTER_Y
 const forward = new Vector3()
 const right = new Vector3()
 const move = new Vector3()
+const look = new Vector3()
 const UP = new Vector3(0, 1, 0)
 
 function zoneAt(x: number, z: number) {
@@ -99,8 +100,12 @@ export function Player() {
     if (zone !== game.zone) game.setZone(zone)
     const near = stationAt(p.x, p.z)
     if (near !== game.near) game.setNear(near)
-    const nearDoor = near ? null : doorAt(p.x, p.z)
+    camera.getWorldDirection(look)
+    const lookLen = Math.hypot(look.x, look.z) || 1
+    const nearDoor = near ? null : doorAt(p.x, p.z, look.x / lookLen, look.z / lookLen)
     if (nearDoor !== game.nearDoor) game.setNearDoor(nearDoor)
+    const nearWall = nearVideoWall(p.x, p.z)
+    if (nearWall !== game.nearWall) game.setNearWall(nearWall)
 
     // Con un PC da scrivania aperto la camera la guida lo zoom sul monitor (DeskCamera).
     if (currentView === 'fps' && desk === 'closed') {

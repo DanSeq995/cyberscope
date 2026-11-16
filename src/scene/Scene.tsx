@@ -19,6 +19,7 @@ import { Player } from './player/Player'
 import { FirewallStation } from './soc/FirewallStation'
 import { SocDriver } from './soc/SocDriver'
 import { DeskCamera } from './soc/DeskCamera'
+import { DeskScreens } from './soc/DeskScreens'
 import { VideoWall } from './soc/VideoWall'
 import { TeamRack } from './work/TeamRack'
 
@@ -90,6 +91,7 @@ export function Scene() {
           {/* Dentro Suspense: montato dopo il caricamento di Rapier, evita un bug di drei Html
               con React 19 StrictMode al primo mount della scena (contenuto svuotato). */}
           <VideoWall />
+          <DeskScreens />
         </Suspense>
       </Canvas>
     </KeyboardControls>

@@ -36,6 +36,9 @@ interface GameState {
   setNear: (near: StationId | null) => void
   nearDoor: DoorId | null
   setNearDoor: (nearDoor: DoorId | null) => void
+  /** Giocatore davanti al video wall di Splunk: solo qui l'HUD mostra i comandi T e F. */
+  nearWall: boolean
+  setNearWall: (nearWall: boolean) => void
   /** Dashboard SOC a tutto schermo (tasto F): il giocatore resta fermo finché è aperta. */
   socFullscreen: boolean
   toggleSocFullscreen: () => void
@@ -111,6 +114,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   setNear: (near) => set({ near }),
   nearDoor: null,
   setNearDoor: (nearDoor) => set({ nearDoor }),
+  nearWall: false,
+  setNearWall: (nearWall) => set({ nearWall }),
   socFullscreen: false,
   toggleSocFullscreen: () =>
     set((s) => (s.laptop === 'closed' && s.desk === 'closed' ? { socFullscreen: !s.socFullscreen } : {})),

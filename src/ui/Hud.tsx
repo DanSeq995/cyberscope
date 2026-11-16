@@ -1,4 +1,6 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { doorById } from '@/scene/office/doors'
 
 import { useChatStore } from '@/state/chat'
 import { useDoorsStore } from '@/state/doors'
@@ -23,6 +25,9 @@ function isFree() {
   return g.view === 'fps' && g.locked && g.laptop === 'closed' && g.desk === 'closed' && !g.socFullscreen
 }
 
+/** Durata del messaggio temporaneo dell'HUD (ms). */
+const NOTE_MS = 2500
+
 /** Il portatile si apre solo durante un incidente, davanti all'armadio di rete. */
 function canOpenLaptop() {
   return isFree() && useGameStore.getState().near === 'firewall' && useSocStore.getState().phase === 'incident'
@@ -45,6 +50,7 @@ export function Hud() {
   const laptop = useGameStore((s) => s.laptop)
   const near = useGameStore((s) => s.near)
   const nearDoor = useGameStore((s) => s.nearDoor)
+  const nearWall = useGameStore((s) => s.nearWall)
   const doorOpen = useDoorsStore((s) => (nearDoor ? s.open[nearDoor] : false))
   const desk = useGameStore((s) => s.desk)
   const workPhase = useWorkStore((s) => s.phase)
@@ -57,6 +63,15 @@ export function Hud() {
   const red = team === 'red'
   const phase = useSocStore((s) => s.phase)
   const toggleSimulation = useSocStore((s) => s.toggle)
+  // Messaggio temporaneo al centro dello schermo (es. porta d'ingresso chiusa).
+  const [note, setNote] = useState<string | null>(null)
+  const noteTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const showNote = useCallback((text: string) => {
+    clearTimeout(noteTimer.current)
+    setNote(text)
+    noteTimer.current = setTimeout(() => setNote(null), NOTE_MS)
+  }, [])
+  useEffect(() => () => clearTimeout(noteTimer.current), [])
 
   // V alterna prima persona / vista pianta, T avvia o azzera la simulazione, F apre/chiude
   // la dashboard SOC a tutto schermo, E apre/chiude il portatile davanti al firewall e i PC da scrivania,
@@ -93,8 +108,11 @@ export function Hud() {
       if (e.code === 'KeyV') {
         if (document.pointerLockElement) document.exitPointerLock()
         toggleView()
-      } else if (game.team === 'red' && (e.code === 'KeyT' || e.code === 'KeyF')) {
-        // Simulazione dell'incidente e dashboard SOC sono del blue team.
+      } else if (e.code === 'KeyF' && game.socFullscreen) {
+        // Chiusura della dashboard a tutto schermo: sempre possibile.
+        toggleSocFullscreen()
+      } else if ((game.team === 'red' || !game.nearWall) && (e.code === 'KeyT' || e.code === 'KeyF')) {
+        // Simulazione dell'incidente e dashboard SOC: solo blue team e solo davanti al video wall di Splunk.
         return
       } else if (e.code === 'KeyT') {
         if (game.laptop !== 'closed') game.setLaptop('closed')
@@ -108,22 +126,26 @@ export function Hud() {
         if (canOpenLaptop()) game.setLaptop('opening')
         else if (game.near === 'study' || game.near === 'work' || game.near === 'red') game.openDesk(game.near)
         else if (game.near === 'team-rack') useWorkStore.getState().install()
-        else if (game.nearDoor) useDoorsStore.getState().toggle(game.nearDoor)
+        else if (game.nearDoor) {
+          // Porta che non si apre (ingresso): al posto dell'apertura compare il suo messaggio.
+          const message = doorById(game.nearDoor).lockedMessage
+          if (message) showNote(message)
+          else useDoorsStore.getState().toggle(game.nearDoor)
+        }
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [toggleView, toggleSimulation, toggleSocFullscreen])
+  }, [toggleView, toggleSimulation, toggleSocFullscreen, showNote])
 
-  const simHint = red ? (
-    <>
-      <Key>E</Key> al PC: terminale del red team
-    </>
-  ) : (
-    <>
-      <Key>T</Key> {phase === 'idle' ? 'avvia simulazione' : 'azzera simulazione'} · <Key>F</Key> SOC a tutto schermo
-    </>
-  )
+  // E compare solo nel prompt contestuale; T e F solo davanti al video wall di Splunk (blue team).
+  const simHint =
+    !red && nearWall ? (
+      <>
+        {' · '}
+        <Key>T</Key> {phase === 'idle' ? 'avvia simulazione' : 'azzera simulazione'} · <Key>F</Key> SOC a tutto schermo
+      </>
+    ) : null
   const idle = locked && laptop === 'closed' && desk === 'closed' && !socFullscreen
   const prompt = !idle
     ? null
@@ -147,7 +169,7 @@ export function Hud() {
   if (view === 'map') {
     return (
       <div className="pointer-events-none fixed bottom-4 left-4 z-10 rounded bg-black/60 px-3 py-2 text-sm text-white">
-        Vista pianta · trascina per ruotare · <Key>V</Key> torna in prima persona · <Key>C</Key> chat · {simHint}
+        Vista pianta · trascina per ruotare · <Key>V</Key> torna in prima persona · <Key>C</Key> chat{simHint}
       </div>
     )
   }
@@ -159,6 +181,11 @@ export function Hud() {
     return (
       <>
         <div className="pointer-events-none fixed top-1/2 left-1/2 z-10 size-1.5 -translate-1/2 rounded-full bg-white/80" />
+        {note && (
+          <div className="pointer-events-none fixed top-[42%] left-1/2 z-10 -translate-x-1/2 animate-in rounded-lg border border-white/20 bg-black/75 px-5 py-2.5 text-lg font-medium text-white fade-in zoom-in-95 duration-200">
+            {note}
+          </div>
+        )}
         {prompt && (
           <div className="pointer-events-none fixed top-[60%] left-1/2 z-10 -translate-x-1/2 rounded-lg bg-black/70 px-4 py-2 text-white">
             <Key>E</Key> {prompt}
@@ -177,7 +204,7 @@ export function Hud() {
           </div>
         )}
         <div className="pointer-events-none fixed bottom-4 left-4 z-10 rounded bg-black/40 px-3 py-2 text-xs text-white/80">
-          <Key>Esc</Key> pausa · <Key>V</Key> vista pianta · <Key>C</Key> chat · {simHint}
+          <Key>Esc</Key> pausa · <Key>V</Key> vista pianta · <Key>C</Key> chat{simHint}
         </div>
       </>
     )
@@ -208,19 +235,11 @@ export function Hud() {
           <li>
             <Key>C</Key> — chat di squadra e chiamata audio (<Key>M</Key> microfono)
           </li>
-          {red ? (
-            <li>
-              <Key>E</Key> — al PC con lo schermo acceso apri il terminale: una domanda per fase, rispondi con{' '}
-              <Key>1</Key>–<Key>4</Key> o con il mouse
-            </li>
-          ) : (
+          {/* Comandi legati agli oggetti: solo quando si è vicini (E compare nel prompt contestuale). */}
+          {!red && nearWall && (
             <>
               <li>
                 <Key>T</Key> — avvia/azzera la simulazione (guarda il video wall del SOC)
-              </li>
-              <li>
-                <Key>E</Key> — al PC Biblioteca (SOC) leggi i manuali e fai i test per guadagnare crediti KC, a quello accanto la posta del sistemista; durante
-                un incidente, davanti al firewall, apri il portatile
               </li>
               <li>
                 <Key>F</Key> — dashboard SOC a tutto schermo (di nuovo <Key>F</Key> per chiuderla)
