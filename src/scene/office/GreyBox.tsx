@@ -17,6 +17,9 @@ const MATERIALS: Record<Kind, MeshStandardMaterial> = {
 /** Variante più scura per corpi tecnici (rack, monitor) che restano statici. */
 export const DARK_MATERIAL = new MeshStandardMaterial({ color: '#4b5059', roughness: 0.8 })
 
+/** Video wall spento: base scura dietro la dashboard HTML, così un frame senza dashboard non lampeggia arancio. */
+export const SCREEN_OFF_MATERIAL = new MeshStandardMaterial({ color: '#0b0d12', roughness: 0.4 })
+
 /** Server sotto attacco: rosso emissivo, l'intensità pulsa (animata da SocDriver). */
 export const ALARM_MATERIAL = new MeshStandardMaterial({
   color: '#7f1d1d',

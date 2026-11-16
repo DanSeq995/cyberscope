@@ -1,8 +1,6 @@
 import type { Team } from '@/scene/office/layout'
 import { useGameStore } from '@/state/game'
 
-import { NewGameButton } from './NewGameButton'
-
 const TEAMS: { id: Team; name: string; role: string; text: string; accent: string }[] = [
   {
     id: 'blue',
@@ -50,9 +48,6 @@ export function TeamSelect() {
           Potrai cambiare squadra dalla schermata di pausa (Esc). Crediti e progressi valgono per una
           partita: ricaricando la pagina si riparte da zero.
         </p>
-        <div className="mt-3 flex justify-center">
-          <NewGameButton />
-        </div>
       </div>
     </div>
   )

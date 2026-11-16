@@ -5,7 +5,7 @@ import { useGameStore } from '@/state/game'
 
 import { Ceiling } from './Ceiling'
 import { OfficeDoorGroup } from './OfficeDoorGroup'
-import { GreyBox, GreyCylinder } from './GreyBox'
+import { GreyBox, GreyCylinder, SCREEN_OFF_MATERIAL } from './GreyBox'
 import { DESK_CHAIR_LAYOUT, DESK_FLOOR_LIFT } from './deskChairFit'
 import {
   DESK,
@@ -29,7 +29,15 @@ import { WallWindow } from './WallWindow'
 function renderSolid(item: LayoutItem) {
   switch (item.type) {
     case 'box':
-      return <GreyBox key={item.id} kind={item.kind} position={item.position} size={item.size} />
+      return (
+        <GreyBox
+          key={item.id}
+          kind={item.kind}
+          position={item.position}
+          size={item.size}
+          material={item.id === 'video-wall' ? SCREEN_OFF_MATERIAL : undefined}
+        />
+      )
     case 'cylinder':
       return (
         <GreyCylinder

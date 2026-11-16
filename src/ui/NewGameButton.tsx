@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { startNewGame } from '@/state/newGame'
 
-/** Pulsante "Nuova partita" con conferma inline (schermata di scelta squadra e pausa). */
+/** Pulsante "Nuova partita" con conferma inline (schermata di pausa). */
 export function NewGameButton() {
   const [confirm, setConfirm] = useState(false)
   const button = 'cursor-pointer rounded-md border px-3 py-1 text-sm'

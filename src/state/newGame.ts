@@ -1,3 +1,4 @@
+import { useGameStore } from './game'
 import { useKnowledgeStore } from './knowledge'
 import { useRedStore } from './red'
 import { useSocStore } from './soc'
@@ -10,4 +11,6 @@ export function startNewGame() {
   useRedStore.getState().reset()
   // toggle a simulazione avviata la ferma e azzera tutto (compresi gli hint della console firewall).
   if (useSocStore.getState().phase !== 'idle') useSocStore.getState().toggle()
+  // Torna al menu iniziale (scelta squadra); no-op se già lì.
+  useGameStore.getState().leaveTeam()
 }
